@@ -38,7 +38,7 @@ object Application extends Controller with Secured {
   }
 
   def index = IsAuthenticated{ email => implicit request =>
-    Ok(views.html.mainPage.overview())
+    Ok(views.html.mainPage.overview(isAdmin(request)))
   }
 
   def logout = Action{

@@ -44,8 +44,6 @@ object MakeDemand extends Controller with Secured{
     }
   }
 
-  // todo check that is owner of demand
-
   def show(demandId: Long) = IsOwnerOfDemand(demandId){ email => implicit request =>
     val demand = Demands.findDemandById(demandId)
     Ok(views.html.demand.showDemand(demand, isAdmin(request)))

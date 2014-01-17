@@ -1,6 +1,16 @@
-@()(implicit flash: Flash)
+@(isAdmin: Boolean = false)(implicit flash: Flash)
 
 @main("Memento"){
     @flashMessages()
-    <h1>Forsíðan</h1>
+    <h4>Mögulegar aðgerðir:</h4>
+    <ul>
+        <li><a href="@routes.MakeDemand.makeDemand">Stofna áminningu</a></li>
+        <li><a href="@routes.MakeDemand.listofDemands">Listi yfir allar áminningar</a></li>
+        <li><a href="@routes.UserControl.editUser">Breyta notendaupplýsingum</a></li>
+        <li><a href="@routes.Application.logout">Skrá mig út</a></li>
+
+    @if(isAdmin){
+        <li><a href="@routes.UserControl.admin">Stjórnkerfi</a></li>
+    }
+    </ul>
 }
