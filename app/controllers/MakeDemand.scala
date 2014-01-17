@@ -33,10 +33,9 @@ object MakeDemand extends Controller with Secured{
   def doMakeDemand = IsAuthenticated{ email => implicit request =>
     try{
       val demand = demandForm.bindFromRequest().get
-      val dbDemand = Demand(userEmail = email, amount = demand.amount, perall = demand.perall, description = demand.description, recipients = demand.recipients.mkString(Demands.recipientsSeperator))
+      val dbDemand = Demand(userEmail = email, amount = demand.amount, perall = demand.perall, description = demand.description, recipients = demand.recipients.mkString(Demands.recipientsSeperator), status = Demands.freshDemand)
       val demandId = Demands.create(dbDemand)
-      val amountsList = amountPerPersonList(demand.amount, demand.perall, demand.recipients.size)
-      Ok(views.html.demand.showDemand(demandId, demand.description, demand.recipients.zip(amountsList)))
+      Redirect(routes.MakeDemand.show(demandId))
     }
     catch {
       case e: Exception => Redirect(routes.MakeDemand.makeDemand).flashing(
@@ -53,6 +52,13 @@ object MakeDemand extends Controller with Secured{
   }
 
   // todo check that is owner of demand
+
+  def show(demandId: Long) = IsAuthenticated{ email => implicit request =>
+    val demand = Demands.findDemandById(demandId)
+    val recipientsList = demand.recipients.split(Demands.recipientsSeperator)
+    val amountsList = amountPerPersonList(demand.amount, demand.perall, recipientsList.size)
+    Ok(views.html.demand.showDemand(demandId, demand.description, recipientsList.zip(amountsList)))
+  }
   def cancel(demandId: Long) = IsAuthenticated{ email => implicit request =>
     try{
       Demands.delete(demandId)

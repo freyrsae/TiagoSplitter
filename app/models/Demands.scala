@@ -13,7 +13,7 @@ import play.api.Play.current
 import Database.threadLocalSession
 
 
-case class Demand(id: Option[Long] = None, userEmail: String, amount: Int, perall: String, description: String, recipients: String)
+case class Demand(id: Option[Long] = None, userEmail: String, amount: Int, perall: String, description: String, recipients: String, status: String)
 
 object Demands extends Table[Demand]("demands") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
@@ -22,14 +22,20 @@ object Demands extends Table[Demand]("demands") {
   def perall = column[String]("perall")
   def description = column[String]("description")
   def recipients = column[String]("recipients")
-  def * = id.? ~ userEmail ~ amount ~ perall ~ description ~ recipients  <> (Demand.apply _, Demand.unapply _)
-  def autoInc = id.? ~ userEmail ~ amount ~ perall ~ description ~ recipients  <> (Demand.apply _, Demand.unapply _) returning id
+  def status = column[String]("status")
+  def * = id.? ~ userEmail ~ amount ~ perall ~ description ~ recipients ~ status  <> (Demand.apply _, Demand.unapply _)
+  def autoInc = id.? ~ userEmail ~ amount ~ perall ~ description ~ recipients ~ status <> (Demand.apply _, Demand.unapply _) returning id
   def client = foreignKey("user_demand_fk", userEmail, Users)(_.email)
 
   val recipientsSeperator = ";"
+  val freshDemand = "fresh"
 
   def findById(id: Long) = DB.withSession{
     for { d <- Demands if d.id === id } yield d
+  }
+
+  def findDemandById(id: Long): Demand = DB.withSession{
+    (for { d <- Demands if d.id === id } yield d).list().head
   }
 
   def create(demand: Demand): Long = DB.withSession{
@@ -37,6 +43,10 @@ object Demands extends Table[Demand]("demands") {
   }
 
   def delete(id: Long) = DB.withSession{
-    findById(id).delete
+    if(findDemandById(id).status == freshDemand){
+      findById(id).delete
+    }else{
+      throw new UnsupportedOperationException
+    }
   }
 }
