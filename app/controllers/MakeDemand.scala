@@ -46,11 +46,11 @@ object MakeDemand extends Controller with Secured{
 
   // todo check that is owner of demand
 
-  def show(demandId: Long) = IsAuthenticated{ email => implicit request =>
+  def show(demandId: Long) = IsOwnerOfDemand(demandId){ email => implicit request =>
     val demand = Demands.findDemandById(demandId)
     Ok(views.html.demand.showDemand(demand, isAdmin(request)))
   }
-  def cancel(demandId: Long) = IsAuthenticated{ email => implicit request =>
+  def cancel(demandId: Long) = IsOwnerOfDemand(demandId){ email => implicit request =>
     try{
       Demands.delete(demandId)
       Redirect(routes.Application.index).flashing(

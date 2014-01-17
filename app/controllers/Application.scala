@@ -5,7 +5,7 @@ import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
 import views.html
-import models.{User, Users}
+import models.{Demands, User, Users}
 import play.mvc.Results.Redirect
 
 object Application extends Controller with Secured {
@@ -85,6 +85,14 @@ trait Secured {
       f(client)(request)
     } else {
       Results.Forbidden("Þú hefur ekki réttindi til að gera þetta")
+    }
+  }
+
+  def IsOwnerOfDemand(demandId: Long)(f: => String => Request[AnyContent] => Result) = IsAuthenticated { client => request =>
+    if(Demands.isOwner(demandId, client) || Users.isAdmin(client)) {
+      f(client)(request)
+    } else {
+      Results.Forbidden("Þú átt ekki þessa kröfu")
     }
   }
 
