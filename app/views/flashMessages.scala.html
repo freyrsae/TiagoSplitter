@@ -1,0 +1,22 @@
+@()(implicit flash: Flash = Flash(Map.empty))
+
+@successMessage = @{flash.get("success")}
+@infoMessage = @{flash.get("info")}
+@warningMessage = @{flash.get("warning")}
+@dangerMessage = @{flash.get("danger")}
+
+@if(successMessage.isDefined){
+    <div class="alert alert-success">@successMessage</div>
+}
+
+@if(infoMessage.isDefined){
+    <div class="alert alert-info">@infoMessage</div>
+}
+
+@if(warningMessage.isDefined){
+    <div class="alert alert-warning">@warningMessage</div>
+}
+
+@if(dangerMessage.isDefined){
+    <div class="alert alert-danger">@dangerMessage</div>
+}

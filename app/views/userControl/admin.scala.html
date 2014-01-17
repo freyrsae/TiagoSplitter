@@ -1,0 +1,34 @@
+@(theForm: Form[(String,String, String)], userList: List[models.User])(implicit flash: Flash)
+
+@import bootstrap3._
+
+@main("Admin"){
+@flashMessages()
+<div>
+@helper.form(action = routes.UserControl.createUser) {
+    @text(theForm("email"), label = "Netfang")
+    @text(theForm("name"), label = "Nafn")
+    @password(theForm("password"), label = "Lykilorð")
+
+    <div class="pull-right">
+        <input class="btn btn-primary" type="submit" value="Búa til">
+    </div>
+}
+</div>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<div>
+<h4>Notendur</h4>
+<ul class="list-unstyled">
+    @for(user <- userList){
+        <li>@user.email - @user.name - @user.pass @if(user.role){ - @user.role}</li>
+    }
+</ul>
+</div>
+}

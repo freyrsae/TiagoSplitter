@@ -1,0 +1,16 @@
+@(theForm: Form[(String,String)])(implicit flash: Flash)
+
+
+@import bootstrap3._
+
+@main("Memento"){
+    @flashMessages()
+    @helper.form(action = routes.UserControl.doEditUser) {
+        @text(theForm("name"), label = "Nafn")
+        @password(theForm("password"), label = "Lykilorð")
+
+        <div class="pull-right">
+            <input class="btn btn-primary" type="submit" value="Breyta">
+        </div>
+    }
+}

@@ -1,0 +1,17 @@
+@(id: Long, description: String, split: Seq[(String, Int)])
+
+@main("Krafa"){
+    <h2>Stofnuð hefur verið áminning með eftirfarandi upplýsingum:</h2>
+
+    <table class="table table-striped">
+        <tbody>
+            @for((person, amount) <- split){
+                <tr><td>@person</td><td>@amount kr.</td></tr>
+            }
+            <tr><td>Samtals:</td><td>@split.map(_._2).sum kr.</td></tr>
+            <tr><td>Vegna: </td><td>@description</td></tr>
+        </tbody>
+    </table>
+
+    <a href="@routes.MakeDemand.cancel(id)" class="btn btn-danger">Hætta við</a>
+}

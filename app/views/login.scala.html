@@ -1,0 +1,18 @@
+@(theForm: Form[(String,String)])(implicit flash: Flash)
+
+@import bootstrap3._
+
+
+@main("Memento", false) {
+    @flashMessages()
+    @helper.form(action = routes.Application.authenticate) {
+        @text(theForm("email"), label = "Netfang")
+        @password(theForm("password"), label = "Lykilorð")
+
+        <div class="pull-right">
+            <input class="btn btn-primary" type="submit" value="Skrá inn">
+        </div>
+
+        <p>Notendur eru a@@a.com, b@@b.com og c@@c.com, öll með lykilorð secret (alice er admin)</p>
+    }
+}
