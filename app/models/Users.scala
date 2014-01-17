@@ -45,14 +45,12 @@ object Users extends Table[User]("users") {
   }
 
   def edit(email: String, name: String, password: String) = DB.withSession{
-    DB.withSession{
       val all = findAll
       for(a <- all){
         Query(Users).filter(_.email === email).map{ r =>
           r.name ~ r.pass
         }.update(name, BCrypt.hashpw(password, BCrypt.gensalt()))
       }
-    }
   }
 
   def authenticate(email: String, password: String): Boolean = DB.withSession{

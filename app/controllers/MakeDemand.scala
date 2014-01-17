@@ -44,20 +44,11 @@ object MakeDemand extends Controller with Secured{
     }
   }
 
-  def amountPerPersonList(amount: Int, perall: String, numberOfRecipients: Int) = {
-    if(perall == "per")
-      Seq.fill(numberOfRecipients)(amount)
-    else
-      Seq.tabulate(numberOfRecipients)(i => amount/numberOfRecipients + {if(i < amount%numberOfRecipients) 1 else 0})
-  }
-
   // todo check that is owner of demand
 
   def show(demandId: Long) = IsAuthenticated{ email => implicit request =>
     val demand = Demands.findDemandById(demandId)
-    val recipientsList = demand.recipients.split(Demands.recipientsSeperator)
-    val amountsList = amountPerPersonList(demand.amount, demand.perall, recipientsList.size)
-    Ok(views.html.demand.showDemand(demandId, demand.description, recipientsList.zip(amountsList)))
+    Ok(views.html.demand.showDemand(demand, isAdmin(request)))
   }
   def cancel(demandId: Long) = IsAuthenticated{ email => implicit request =>
     try{
@@ -71,6 +62,25 @@ object MakeDemand extends Controller with Secured{
         "danger" -> "Mistókst að hætta við áminningu"
       )
     }
+  }
+
+  def listofDemands = IsAuthenticated{ email => implicit request =>
+
+    val list = Demands.findByOwner(email)
+
+    Ok(views.html.demand.listDemands(list))
+  }
+
+  def listOfDemandsAdmin = IsAdminAuthenticated{ email => implicit request =>
+    val list = Demands.findAll
+
+    Ok(views.html.demand.listDemands(list, true))
+  }
+
+  def setStatusToSent(demandId: Long) = IsAdminAuthenticated{ email => implicit request =>
+
+    Demands.setStatusToSent(demandId)
+    Redirect(routes.MakeDemand.show(demandId))
   }
 
 

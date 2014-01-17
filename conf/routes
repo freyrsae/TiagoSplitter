@@ -3,22 +3,25 @@
 # ~~~~
 
 # Home page
-GET         /login               controllers.Application.login
-POST        /login               controllers.Application.authenticate
-GET         /logout              controllers.Application.logout
+GET         /login                       controllers.Application.login
+POST        /login                       controllers.Application.authenticate
+GET         /logout                      controllers.Application.logout
 
-GET         /admin               controllers.UserControl.admin
-POST        /admin               controllers.UserControl.createUser
-GET         /edit                controllers.UserControl.editUser
-POST        /edit                controllers.UserControl.doEditUser
+GET         /admin                       controllers.UserControl.admin
+POST        /admin                       controllers.UserControl.createUser
+GET         /admin/list                  controllers.MakeDemand.listOfDemandsAdmin
+GET         /setStatusToSent/:id         controllers.MakeDemand.setStatusToSent(id: Long)
+GET         /edit                        controllers.UserControl.editUser
+POST        /edit                        controllers.UserControl.doEditUser
 
-GET         /                    controllers.Application.index
-GET         /um-okkur            controllers.Application.aboutUs
+GET         /                            controllers.Application.index
+GET         /um-okkur                    controllers.Application.aboutUs
 
-GET         /stofna              controllers.MakeDemand.makeDemand
-POST        /stofna              controllers.MakeDemand.doMakeDemand
-GET         /haetta-vid/:demandId          controllers.MakeDemand.cancel(demandId: Long)
-GET         /skoda/:demandId     controllers.MakeDemand.show(demandId: Long)
+GET         /stofna                      controllers.MakeDemand.makeDemand
+POST        /stofna                      controllers.MakeDemand.doMakeDemand
+GET         /listi                       controllers.MakeDemand.listofDemands
+GET         /haetta-vid/:demandId        controllers.MakeDemand.cancel(demandId: Long)
+GET         /skoda/:demandId             controllers.MakeDemand.show(demandId: Long)
 
 # Map static resources from the /public folder to the /assets URL path
-GET         /assets/*file        controllers.Assets.at(path="/public", file)
+GET         /assets/*file                controllers.Assets.at(path="/public", file)

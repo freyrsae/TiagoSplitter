@@ -13,7 +13,22 @@ import play.api.Play.current
 import Database.threadLocalSession
 
 
-case class Demand(id: Option[Long] = None, userEmail: String, amount: Int, perall: String, description: String, recipients: String, status: String)
+case class Demand(id: Option[Long] = None, userEmail: String, amount: Int, perall: String, description: String, recipients: String, status: String){
+
+  def recipientsWithAmountsList= {
+    val recipientsList = recipients.split(Demands.recipientsSeperator)
+    val amountsList = amountPerPersonList(amount, perall, recipientsList.size)
+    recipientsList.zip(amountsList)
+  }
+
+  def amountPerPersonList(amount: Int, perall: String, numberOfRecipients: Int) = {
+    if(perall == "per")
+      Seq.fill(numberOfRecipients)(amount)
+    else
+      Seq.tabulate(numberOfRecipients)(i => amount/numberOfRecipients + {if(i < amount%numberOfRecipients) 1 else 0})
+  }
+
+}
 
 object Demands extends Table[Demand]("demands") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
@@ -28,7 +43,8 @@ object Demands extends Table[Demand]("demands") {
   def client = foreignKey("user_demand_fk", userEmail, Users)(_.email)
 
   val recipientsSeperator = ";"
-  val freshDemand = "fresh"
+  val freshDemand = "Ný"
+  val sentDemand = "Send"
 
   def findById(id: Long) = DB.withSession{
     for { d <- Demands if d.id === id } yield d
@@ -48,5 +64,19 @@ object Demands extends Table[Demand]("demands") {
     }else{
       throw new UnsupportedOperationException
     }
+  }
+
+  def findByOwner(email: String) = DB.withSession{
+    (for { d <- Demands if d.userEmail === email } yield d).list()
+  }
+
+  def findAll = DB.withSession{
+    (for { d <- Demands } yield d).list()
+  }
+
+  def setStatusToSent(id: Long) = DB.withSession{
+    findById(id).map{ d =>
+      d.status
+    }.update(sentDemand)
   }
 }

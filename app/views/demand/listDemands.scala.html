@@ -1,0 +1,30 @@
+@(listOfDemands: List[models.Demand], isAdmin: Boolean = false)
+
+@main("Listi yfir áminningar"){
+    <table class="table table-striped">
+        <thead>
+            @if(isAdmin){
+                <th>Eigandi</th>
+            }
+            <th>Upphæð</th>
+            <th>Vegna</th>
+            <th>Móttakendur</th>
+            <th>Staða</th>
+            <th></th>
+        </thead>
+        <tbody>
+            @for(d <- listOfDemands){
+                <tr>
+                    @if(isAdmin){
+                        <td>@d.userEmail</td>
+                    }
+                    <td>@d.amount</td>
+                    <td>@d.description</td>
+                    <td>@d.recipients.replace(Demands.recipientsSeperator, ", ")</td>
+                    <td>@d.status</td>
+                    <td><a href="@routes.MakeDemand.show(d.id.getOrElse(0))">Skoða</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

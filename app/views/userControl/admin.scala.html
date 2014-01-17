@@ -4,6 +4,7 @@
 
 @main("Admin"){
 @flashMessages()
+<a href="@routes.MakeDemand.listOfDemandsAdmin" class="btn btn-default">Listi yfir áminningar</a>
 <div>
 @helper.form(action = routes.UserControl.createUser) {
     @text(theForm("email"), label = "Netfang")

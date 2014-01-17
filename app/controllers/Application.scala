@@ -58,6 +58,9 @@ trait Secured {
 
 
   def isLoggedIn(request: RequestHeader): Boolean = Users.findByEmail(clientId(request).getOrElse("")) != null
+
+  def isAdmin(request: RequestHeader): Boolean = Users.isAdmin(clientId(request).getOrElse(""))
+
   /**
    * Retrieve the connected user email.
    */
