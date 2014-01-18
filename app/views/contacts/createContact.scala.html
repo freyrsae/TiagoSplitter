@@ -1,0 +1,39 @@
+@(theForm: Form[(String, String)], listOfContacts: List[models.Contact])(implicit flash: Flash)
+
+@import bootstrap3._
+
+@main("Búa til tengilið"){
+    @flashMessages()
+    @helper.form(action = routes.ContactControl.doCreateContact) {
+        @text(theForm("kennitala"), label = "Kennitala")
+        @text(theForm("name"), label = "Nafn")
+
+        <div class="pull-right">
+            <input class="btn btn-primary" type="submit" value="Bæta við">
+        </div>
+    }
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <h4>Tengiliðir</h4>
+    <table class="table table-striped">
+        <thead>
+            <th>Nafn</th>
+            <th>Kennitala</th>
+        </thead>
+        <tbody>
+        @for(c <- listOfContacts){
+            <tr>
+                <td>@c.name</td>
+                <td>@c.kennitala</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

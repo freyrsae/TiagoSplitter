@@ -2,10 +2,12 @@
 
 @main("Memento"){
     @flashMessages()
+    <div class="text-center">
     <h4>Mögulegar aðgerðir:</h4>
-    <ul>
+    <ul class="list-unstyled">
         <li><a href="@routes.MakeDemand.makeDemand">Stofna áminningu</a></li>
         <li><a href="@routes.MakeDemand.listofDemands">Listi yfir allar áminningar</a></li>
+        <li><a href="@routes.ContactControl.createContact">Tengiliðir</a></li>
         <li><a href="@routes.UserControl.editUser">Breyta notendaupplýsingum</a></li>
         <li><a href="@routes.Application.logout">Skrá mig út</a></li>
 
@@ -13,4 +15,5 @@
         <li><a href="@routes.UserControl.admin">Stjórnkerfi</a></li>
     }
     </ul>
+    </div>
 }
