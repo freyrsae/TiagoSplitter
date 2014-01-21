@@ -115,60 +115,16 @@
             });
         }
 
-
-    //------------------------------------------------------------------------------------------------------
-    $('ul.celebList li').click(function(e)
-    {
-    var d = $(this).find("span.t").text();
-    var n = $(this).find("span.n").text();
-    fillUp(d, n);
-
-    });
-
-    $("#searchButton").click(function(e)
-    {
-    q = $("#searchInput").val()
-    $.get("findBirthday?name=" + q,function(data){
-    fillUp(data, q);
-    }).fail(function() {
-    $("#noBday").text("Sorry, could not find a birthday for " + q);
-    });
-    });
-
-    function fillUp(d, name){
-    $("#day2").val( parseInt(d.substring(8)));
-    $("#month2").val( parseInt(d.substring(5,7)));
-    $("#year2").val( parseInt(d.substring(0,4)));
-    $("button#calcButton" ).trigger("click");
-    localStorage.setItem("celebName", name);
-    }
-
-    function currentCeleb(){
-    var current = localStorage.getItem("celebName");
-    if(current){
-    $("#currentCeleb" ).text('(Currently: ' + current + ')')
-    localStorage.setItem("celebName", "")
-    }
-    }
-
-    $("#day2,#month2,#year2" ).change(function() {
-    $("#currentCeleb" ).text('')
-    });
-
-    $(function() {
-    currentCeleb();
-    $( "#searchInput" ).autocomplete({
-    source: "/search",
-    select: function(){$("#searchButton" ).trigger("click");}
-    });
-    });
-
-    $("#searchInput").keypress(function(e) {
-    if(e.which == 13) {
-    $("#searchButton" ).trigger("click");
-    }
-    });
-
+        $(function() {
+            $( "#tempRecipient" ).autocomplete({
+                source: "/tengilidir/leit",
+                select: function(){
+                    addRecipient();
+                    $("#tempRecipient" ).val("");
+                    return false;
+                }
+            });
+        });
 
     });
 </script>

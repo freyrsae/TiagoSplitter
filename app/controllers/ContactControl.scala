@@ -43,7 +43,7 @@ object ContactControl extends Controller with Secured{
   }
 
   def searchContacts(term: String) = IsAuthenticated{ email => implicit request =>
-    val jsonArr = new JSONArray(Contacts.searchInContacts(term, email).map(_.name))
+    val jsonArr = new JSONArray(Contacts.searchInContacts(term, email).map(x => s"${x.name}, ${x.kennitala}"))
     Ok(jsonArr.toString())
   }
 
