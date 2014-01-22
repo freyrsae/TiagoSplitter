@@ -6,8 +6,8 @@ libraryDependencies ++= Seq(
   jdbc,
   cache,
   "com.typesafe.play" %% "play-slick" % "0.5.0.8",
-  "org.mindrot" % "jbcrypt" % "0.3m",
-  "postgresql" % "postgresql" % "9.1-901-1.jdbc4"
+  "mysql" % "mysql-connector-java" % "5.1.18",
+  "org.mindrot" % "jbcrypt" % "0.3m"
 )
 
 play.Project.playScalaSettings
