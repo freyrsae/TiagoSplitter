@@ -13,7 +13,7 @@
         @text(theForm("description"), label = "Vegna")
         </div>
         <div class="form-group">
-            <label class="col-sm-2 control-label">Bæta við móttakanda</label>
+            <label class="col-sm-2 control-label">Bæta við móttakanda (verður að innihalda kennitölu)</label>
             <div class="col-sm-10">
                 <div class="input-group">
                 <input type="text"
@@ -95,13 +95,20 @@
         function resetRecAmount() {
             var amount = $("#amount" ).val();
             var recAmount;
+            var remainder = 0;
             if(isTotal()){
                 var numberOfRecipients = $('div#recs' ).children().length
                 recAmount = amount/numberOfRecipients;
+                remainder = amount%numberOfRecipients;
             }else{
                 recAmount = amount;
             }
-            $("span.recAmount" ).html(Math.round(recAmount) + " kr. &nbsp;");
+            $('div#recs' ).children( ).children("div" ).each(function(index,val) {
+                var addOne = 0;
+                if(index < remainder){addOne = 1};
+                $(this ).find("span.recAmount").html((Math.floor(recAmount) + addOne) + " kr. &nbsp;");
+            });
+            //$("span.recAmount" ).html(Math.round(recAmount) + " kr. &nbsp;");
         }
 
         function isTotal(){
