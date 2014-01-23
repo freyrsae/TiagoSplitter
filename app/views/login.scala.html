@@ -6,7 +6,7 @@
 @main("Memento", false) {
     @flashMessages()
     @helper.form(action = routes.Application.authenticate) {
-        @text(theForm("email"), label = "Netfang")
+        @text(theForm("email"), label = "Netfang", inputType = "email")
         @password(theForm("password"), label = "Lykilorð")
 
         <div class="pull-right">
