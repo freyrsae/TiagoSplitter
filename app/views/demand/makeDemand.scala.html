@@ -5,7 +5,7 @@
     @helper.form(action = routes.MakeDemand.doMakeDemand, 'id -> "demandForm") {
         <div id="message">
         </div>
-        @text(theForm("amount"), label = "Upphæð", inputType = "tel")
+        @text(theForm("amount"), label = "Upphæð", inputType = "number")
         <div class="">
         @radiobuttons(theForm("perall"), label = "", buttonList = List(("total", "Heildar"), ("per", "Á haus")), default = "total")
         </div>
