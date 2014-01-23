@@ -1,9 +1,9 @@
-@(field: Field, label: String = "CHANGEME", placeholder: String = "", help: String = "", gridClass: String = "col-sm-10", disabled: Boolean = false)
+@(field: Field, label: String = "CHANGEME", placeholder: String = "", help: String = "", gridClass: String = "col-sm-10", disabled: Boolean = false,  inputType: String = "text")
 
   <div class="form-group @if(field.hasErrors) {has-error}">
     <label class="col-sm-2 control-label">@label</label>
     <div class="@gridClass">
-      <input type="text" 
+      <input type="@inputType"
              class="form-control"
              id="@field.id" 
              name="@field.name" 

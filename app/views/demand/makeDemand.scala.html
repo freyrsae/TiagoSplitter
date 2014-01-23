@@ -5,7 +5,7 @@
     @helper.form(action = routes.MakeDemand.doMakeDemand, 'id -> "demandForm") {
         <div id="message">
         </div>
-        @text(theForm("amount"), label = "Upphæð")
+        @text(theForm("amount"), label = "Upphæð", inputType = "tel")
         <div class="">
         @radiobuttons(theForm("perall"), label = "", buttonList = List(("total", "Heildar"), ("per", "Á haus")), default = "total")
         </div>
@@ -118,7 +118,9 @@
         $(function() {
             $( "#tempRecipient" ).autocomplete({
                 source: "/tengilidir/leit",
-                select: function(){
+                select: function(event, ui){
+                    var nameChosen = ui.item.value;
+                    $("#tempRecipient" ).val(nameChosen)
                     addRecipient();
                     $("#tempRecipient" ).val("");
                     return false;
