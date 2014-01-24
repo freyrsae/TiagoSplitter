@@ -10,7 +10,7 @@
                     <td>@r.name</td><td>@r.amount kr.</td>
                     <td>@if(r.paid){Greitt}else{Ógreitt}</td>
                     <td>
-                    @if(isAdmin && !r.paid){
+                    @if(!r.paid){
                         <a href="@routes.MakeDemand.markAsPaid(r.id.get, demand.id.get)" class="btn btn-warning btn-xs">Merkja sem greitt</a>
                     }
                     </td>
@@ -19,6 +19,7 @@
             }
             <tr class="active"><td>Samtals:</td><td>@demand.amount kr.</td><td></td><td></td></tr>
             <tr class="active"><td>Vegna: </td><td>@demand.description</td><td></td><td></td></tr>
+            <tr class="active"><td>Stofnuð: </td><td>@demand.getDate</td><td></td><td></td></tr>
         </tbody>
     </table>
 

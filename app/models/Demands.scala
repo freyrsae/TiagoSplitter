@@ -12,9 +12,23 @@ import play.api.db.slick.DB
 import play.api.Play.current
 import Database.threadLocalSession
 import controllers.MakeDemand.DemandNoIds
+import java.sql.Timestamp
 
 
-case class Demand(id: Option[Long] = None, userEmail: String, amount: Int, perall: String, description: String, status: String)
+case class Demand(id: Option[Long] = None,
+                  userEmail: String,
+                  amount: Int,
+                  perall: String,
+                  description: String,
+                  status: String,
+                  timeStamp: Timestamp = new Timestamp(System.currentTimeMillis())
+                   )
+{
+  def getDate = {
+    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+    format.format(this.timeStamp)
+  }
+}
 
 object Demands extends Table[Demand]("demands") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
@@ -23,8 +37,9 @@ object Demands extends Table[Demand]("demands") {
   def perall = column[String]("perall")
   def description = column[String]("description")
   def status = column[String]("status")
-  def * = id.? ~ userEmail ~ amount ~ perall ~ description ~  status  <> (Demand.apply _, Demand.unapply _)
-  def autoInc = id.? ~ userEmail ~ amount ~ perall ~ description ~ status <> (Demand.apply _, Demand.unapply _) returning id
+  def timestamp = column[Timestamp]("timestamp")
+  def * = id.? ~ userEmail ~ amount ~ perall ~ description ~  status ~ timestamp  <> (Demand.apply _, Demand.unapply _)
+  def autoInc = id.? ~ userEmail ~ amount ~ perall ~ description ~ status ~ timestamp <> (Demand.apply _, Demand.unapply _) returning id
   def client = foreignKey("user_demand_fk", userEmail, Users)(_.email)
 
   val recipientsSeperator = ";"
