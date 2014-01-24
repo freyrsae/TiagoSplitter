@@ -3,13 +3,22 @@
 @main("Áminning"){
     <h2>Stofnuð hefur verið áminning með eftirfarandi upplýsingum:</h2>
 
-    <table class="table table-striped">
+    <table class="table">
         <tbody>
             @for(r <- Recipients.findByDemand(demand.id.get)){
-                <tr><td>@r.name</td><td>@r.amount kr.</td></tr>
+                <tr class="@if(r.paid){success}else{danger}">
+                    <td>@r.name</td><td>@r.amount kr.</td>
+                    <td>@if(r.paid){Greitt}else{Ógreitt}</td>
+                    <td>
+                    @if(isAdmin && !r.paid){
+                        <a href="@routes.MakeDemand.markAsPaid(r.id.get, demand.id.get)" class="btn btn-warning btn-xs">Merkja sem greitt</a>
+                    }
+                    </td>
+
+                </tr>
             }
-            <tr><td>Samtals:</td><td>@demand.amount kr.</td></tr>
-            <tr><td>Vegna: </td><td>@demand.description</td></tr>
+            <tr class="active"><td>Samtals:</td><td>@demand.amount kr.</td><td></td><td></td></tr>
+            <tr class="active"><td>Vegna: </td><td>@demand.description</td><td></td><td></td></tr>
         </tbody>
     </table>
 

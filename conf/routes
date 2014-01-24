@@ -11,6 +11,7 @@ GET         /admin                       controllers.UserControl.admin
 POST        /admin                       controllers.UserControl.createUser
 GET         /admin/list                  controllers.MakeDemand.listOfDemandsAdmin
 GET         /setStatusToSent/:id         controllers.MakeDemand.setStatusToSent(id: Long)
+GET         /markAsPaid                  controllers.MakeDemand.markAsPaid(recipientId: Long ?= 0, demandId: Long ?= 0)
 GET         /edit                        controllers.UserControl.editUser
 POST        /edit                        controllers.UserControl.doEditUser
 

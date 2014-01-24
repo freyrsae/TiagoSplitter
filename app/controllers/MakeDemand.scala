@@ -3,7 +3,7 @@ package controllers
 import play.api.mvc.Controller
 import play.api.data.Form
 import play.api.data.Forms._
-import models.{Demand, Demands}
+import models.{Recipients, Demand, Demands}
 
 /**
  * Created with IntelliJ IDEA.
@@ -77,6 +77,12 @@ object MakeDemand extends Controller with Secured{
   def setStatusToSent(demandId: Long) = IsAdminAuthenticated{ email => implicit request =>
 
     Demands.setStatusToSent(demandId)
+    Redirect(routes.MakeDemand.show(demandId))
+  }
+
+  def markAsPaid(recipientId: Long, demandId: Long) = IsAdminAuthenticated{ email => implicit request =>
+
+    Recipients.markAsPaid(recipientId)
     Redirect(routes.MakeDemand.show(demandId))
   }
 

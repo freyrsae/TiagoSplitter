@@ -18,7 +18,7 @@
                     @if(isAdmin){
                         <td>@d.userEmail</td>
                     }
-                    <td>@d.amount</td>
+                    <td>@d.amount kr.</td>
                     <td>@d.description</td>
                     <td><ul class="list-unstyled">@Recipients.findByDemand(d.id.get).map{x =>
                         <li class="@if(x.paid){text-success}else{text-danger}">

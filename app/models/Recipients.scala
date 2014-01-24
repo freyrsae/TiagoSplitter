@@ -25,6 +25,9 @@ object Recipients extends Table[Recipient]("recipients"){
   def * = id.? ~ demandId ~ name ~ amount ~ paid <> (Recipient.apply _, Recipient.unapply _)
   def demand = foreignKey("demand_recipient_fk", demandId, Demands)(_.id)
 
+  def findById(id: Long) = DB.withSession{
+    for { r <- Recipients if r.id === id } yield r
+  }
 
   def create(recipient: Recipient)=DB.withSession{
     *.insert(recipient)
@@ -32,5 +35,11 @@ object Recipients extends Table[Recipient]("recipients"){
 
   def findByDemand(demandId: Long)= DB.withSession{
     (for { r <- Recipients if r.demandId === demandId } yield r).list()
+  }
+
+  def markAsPaid(id: Long) = DB.withSession{
+    findById(id).map{ r =>
+      r.paid
+    }.update(true)
   }
 }
