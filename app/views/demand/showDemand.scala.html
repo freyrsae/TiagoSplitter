@@ -5,10 +5,10 @@
 
     <table class="table table-striped">
         <tbody>
-            @for((person, amount) <- demand.recipientsWithAmountsList){
-                <tr><td>@person</td><td>@amount kr.</td></tr>
+            @for(r <- Recipients.findByDemand(demand.id.get)){
+                <tr><td>@r.name</td><td>@r.amount kr.</td></tr>
             }
-            <tr><td>Samtals:</td><td>@demand.recipientsWithAmountsList.map(_._2).sum kr.</td></tr>
+            <tr><td>Samtals:</td><td>@demand.amount kr.</td></tr>
             <tr><td>Vegna: </td><td>@demand.description</td></tr>
         </tbody>
     </table>

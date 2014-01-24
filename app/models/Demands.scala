@@ -11,24 +11,10 @@ import play.api.db.slick.Config.driver.simple._
 import play.api.db.slick.DB
 import play.api.Play.current
 import Database.threadLocalSession
+import controllers.MakeDemand.DemandNoIds
 
 
-case class Demand(id: Option[Long] = None, userEmail: String, amount: Int, perall: String, description: String, recipients: String, status: String){
-
-  def recipientsWithAmountsList= {
-    val recipientsList = recipients.split(Demands.recipientsSeperator)
-    val amountsList = amountPerPersonList(amount, perall, recipientsList.size)
-    recipientsList.zip(amountsList)
-  }
-
-  def amountPerPersonList(amount: Int, perall: String, numberOfRecipients: Int) = {
-    if(perall == "per")
-      Seq.fill(numberOfRecipients)(amount)
-    else
-      Seq.tabulate(numberOfRecipients)(i => amount/numberOfRecipients + {if(i < amount%numberOfRecipients) 1 else 0})
-  }
-
-}
+case class Demand(id: Option[Long] = None, userEmail: String, amount: Int, perall: String, description: String, status: String)
 
 object Demands extends Table[Demand]("demands") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
@@ -36,10 +22,9 @@ object Demands extends Table[Demand]("demands") {
   def amount = column[Int]("amount")
   def perall = column[String]("perall")
   def description = column[String]("description")
-  def recipients = column[String]("recipients")
   def status = column[String]("status")
-  def * = id.? ~ userEmail ~ amount ~ perall ~ description ~ recipients ~ status  <> (Demand.apply _, Demand.unapply _)
-  def autoInc = id.? ~ userEmail ~ amount ~ perall ~ description ~ recipients ~ status <> (Demand.apply _, Demand.unapply _) returning id
+  def * = id.? ~ userEmail ~ amount ~ perall ~ description ~  status  <> (Demand.apply _, Demand.unapply _)
+  def autoInc = id.? ~ userEmail ~ amount ~ perall ~ description ~ status <> (Demand.apply _, Demand.unapply _) returning id
   def client = foreignKey("user_demand_fk", userEmail, Users)(_.email)
 
   val recipientsSeperator = ";"
@@ -54,8 +39,24 @@ object Demands extends Table[Demand]("demands") {
     (for { d <- Demands if d.id === id } yield d).list().head
   }
 
-  def create(demand: Demand): Long = DB.withSession{
-   autoInc.insert(demand)
+  def create(email: String, demand: DemandNoIds): Long = DB.withSession{
+    val dbDemand = Demand(userEmail = email, amount = demand.amount, perall = demand.perall, description = demand.description, status = Demands.freshDemand)
+    val demandId = autoInc.insert(dbDemand)
+    val recsWithAmounts = recipientsWithAmountsList(demand)
+    recsWithAmounts.map(x => Recipients.create(Recipient(demandId = demandId, name = x._1, amount = x._2, paid = false)))
+    demandId
+  }
+
+  private def recipientsWithAmountsList(demand: DemandNoIds)= {
+    val amountsList = amountPerPersonList(demand.amount, demand.perall, demand.recipients.length)
+    demand.recipients.zip(amountsList)
+  }
+
+  private def amountPerPersonList(amount: Int, perall: String, numberOfRecipients: Int) = {
+    if(perall == "per")
+      Seq.fill(numberOfRecipients)(amount)
+    else
+      Seq.tabulate(numberOfRecipients)(i => amount/numberOfRecipients + {if(i < amount%numberOfRecipients) 1 else 0})
   }
 
   def delete(id: Long) = DB.withSession{

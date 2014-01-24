@@ -33,8 +33,7 @@ object MakeDemand extends Controller with Secured{
   def doMakeDemand = IsAuthenticated{ email => implicit request =>
     try{
       val demand = demandForm.bindFromRequest().get
-      val dbDemand = Demand(userEmail = email, amount = demand.amount, perall = demand.perall, description = demand.description, recipients = demand.recipients.mkString(Demands.recipientsSeperator), status = Demands.freshDemand)
-      val demandId = Demands.create(dbDemand)
+      val demandId = Demands.create(email, demand)
       Redirect(routes.MakeDemand.show(demandId))
     }
     catch {

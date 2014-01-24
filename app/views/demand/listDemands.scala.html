@@ -20,7 +20,12 @@
                     }
                     <td>@d.amount</td>
                     <td>@d.description</td>
-                    <td>@d.recipients.replace(Demands.recipientsSeperator, ", ")</td>
+                    <td><ul class="list-unstyled">@Recipients.findByDemand(d.id.get).map{x =>
+                        <li class="@if(x.paid){text-success}else{text-danger}">
+                        @{s"${x.name}"}
+                        </li>
+                    }
+                    </ul></td>
                     <td>@d.status</td>
                     <td><a href="@routes.MakeDemand.show(d.id.getOrElse(0))">Skoða</a></td>
                 </tr>
