@@ -6,7 +6,7 @@
     <table class="table">
         <tbody>
             @for(r <- Recipients.findByDemand(demand.id.get)){
-                <tr class="@if(r.paid){success}else{danger}">
+                <tr @if(demand.status != Demands.freshDemand){class="@if(r.paid){success}else{danger}"}>
                     <td>@r.name</td><td>@r.amount kr.</td>
                     <td>@if(r.paid){Greitt}else{Ógreitt}</td>
                     <td>
