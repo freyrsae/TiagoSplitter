@@ -97,8 +97,6 @@ object Demands extends Table[Demand]("demands") {
   }
 
   def isOwner(id: Long, user: String): Boolean = DB.withSession{
-    print(id)
-    print(user)
     !(for { d <- Demands if (d.id === id && d.userEmail === user) } yield d).list().isEmpty
   }
 }
