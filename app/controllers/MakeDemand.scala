@@ -36,7 +36,7 @@ object MakeDemand extends Controller with Secured{
       val demand = demandForm.bindFromRequest().get
       val demandId = Demands.create(email, demand)
       //todo kveikja á þegar fer í loftið
-      //MailerUtil.sendNotificationMail(email, demand.amount, demand.description, demand.recipients.mkString(", "))
+      MailerUtil.sendNotificationMail(email, demandId, demand.amount, demand.description, demand.recipients.mkString(", "), request)
       Redirect(routes.MakeDemand.show(demandId))
     }
     catch {
