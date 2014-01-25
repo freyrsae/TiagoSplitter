@@ -25,7 +25,7 @@ case class Demand(id: Option[Long] = None,
                    )
 {
   def getDate = {
-    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+    val format = new java.text.SimpleDateFormat("dd-MM-yyyy hh:mm")
     format.format(this.timeStamp)
   }
 }
