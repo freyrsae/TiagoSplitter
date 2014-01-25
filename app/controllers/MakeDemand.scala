@@ -4,6 +4,7 @@ import play.api.mvc.Controller
 import play.api.data.Form
 import play.api.data.Forms._
 import models.{Recipients, Demand, Demands}
+import utils.MailerUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,6 +35,8 @@ object MakeDemand extends Controller with Secured{
     try{
       val demand = demandForm.bindFromRequest().get
       val demandId = Demands.create(email, demand)
+      //todo kveikja á þegar fer í loftið
+      //MailerUtil.sendNotificationMail(email, demand.amount, demand.description, demand.recipients.mkString(", "))
       Redirect(routes.MakeDemand.show(demandId))
     }
     catch {
