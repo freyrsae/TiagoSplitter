@@ -11,7 +11,7 @@
                     <td>@if(r.paid){Greitt}else{Ógreitt}</td>
                     <td>
                     @if(!r.paid){
-                        <a href="@routes.MakeDemand.markAsPaid(r.id.get, demand.id.get)" class="btn btn-warning btn-xs">Merkja sem greitt</a>
+                        <a href="@routes.MakeDemand.markAsPaid(r.id.get, demand.id.get)" class="btn btn-warning btn-xs">Búið að greiða</a>
                     }
                     </td>
 
