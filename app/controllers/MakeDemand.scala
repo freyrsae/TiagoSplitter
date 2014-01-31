@@ -15,12 +15,12 @@ import utils.MailerUtil
  */
 object MakeDemand extends Controller with Secured{
 
-  case class DemandNoIds(amount: Int, perall: String, description: String, recipients: Seq[String])
+  case class DemandNoIds(amount: Int, perPerson: Option[String], description: String, recipients: Seq[String])
 
   val demandForm = Form(
     mapping(
       "amount" -> number,
-      "perall" -> text,
+      "perPerson" -> optional(text),
       "description" -> text,
       "recipients" -> seq(text)
     )(DemandNoIds.apply)(DemandNoIds.unapply)
@@ -33,7 +33,10 @@ object MakeDemand extends Controller with Secured{
 
   def doMakeDemand = IsAuthenticated{ email => implicit request =>
     try{
+      println("doMake")
+      println(demandForm.bindFromRequest().data.get("perPerson"))
       val demand = demandForm.bindFromRequest().get
+      println("perPerson" + demand.perPerson)
       val demandId = Demands.create(email, demand)
       //todo kveikja á þegar fer í loftið
       MailerUtil.sendNotificationMail(email, demandId, demand.amount, demand.description, demand.recipients.mkString(", "), request)

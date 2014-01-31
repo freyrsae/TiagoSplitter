@@ -19,7 +19,7 @@
 
                 <div class="col-sm-2 checkbox-inline checkbox col-xs-10 col-xs-offset-5 col-sm-offset-0">
                     <label class="control-label">
-                    <input type="checkbox" id="perall" name="perall"> Á mann
+                    <input type="checkbox" id="perPerson" name="perPerson"> Á mann
                     </label>
 
                 </div>
@@ -106,7 +106,7 @@
         resetRecAmount();
     });
 
-        $("#amount,#peralls").change(function(){
+        $("#amount,#perPerson").change(function(){
             resetRecAmount();
         });
 
@@ -130,8 +130,7 @@
         }
 
         function isTotal(){
-            var pt = $('form input[type=radio]:checked' ).val()
-            return pt == "total";
+            return !$('#perPerson').prop('checked')
         }
 
         function renumber() {
