@@ -1,4 +1,4 @@
-@(field: Field, label: String = "CHANGEME", placeholder: String = "", help: String = "", gridClass: String = "col-sm-10", disabled: Boolean = false,  inputType: String = "text", pattern: String = "")
+@(field: Field, label: String = "CHANGEME", placeholder: String = "", help: String = "", gridClass: String = "col-sm-10", disabled: Boolean = false,  inputType: String = "text", pattern: String = "", maxlength: Int = -1)
 
   <div class="form-group @if(field.hasErrors) {has-error}">
     <label class="col-sm-2 control-label">@label</label>
@@ -10,6 +10,7 @@
              name="@field.name" 
              value="@field.value.getOrElse("")"
              placeholder="@placeholder"
+             @if(maxlength > -1){maxlength="@maxlength" }
              @if(disabled){ disabled }/>
       <span class="help-block">@help</span>
       <span class="help-block">@{field.error.map { error => error.message }}</span>
