@@ -8,7 +8,7 @@
         <link href="@routes.Assets.at("bootstrap_v3/css/bootstrap.min.css")" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="@routes.Assets.at("jquery-ui-1.10.4.custom/css/ui-lightness/jquery-ui-1.10.4.custom.min.css")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/mem")">
+        <link rel="shortcut icon" type="image/jpg" href="@routes.Assets.at("images/memento-logo-nobg.jpg")">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
@@ -25,9 +25,9 @@
                 <div class="collapse navbar-collapse">
                     <ul class="nav navbar-nav pull-right">
                         @if(loggedIn){
-                            <li><a href="@routes.MakeDemand.makeDemand">Rukka</a></li>
-                            <li><a href="@routes.MakeDemand.listofDemands">Yfirlit</a></li>
-                            <li><a href="@routes.ContactControl.createContact">Tengiliðir</a></li>
+                            <li><a href="@routes.MakeDemand.makeDemand"><span class="glyphicon glyphicon-send"></span>&nbsp;Rukka</a></li>
+                            <li><a href="@routes.MakeDemand.listofDemands"><span class="glyphicon glyphicon-list-alt"></span>&nbsp;Yfirlit</a></li>
+                            <li><a href="@routes.ContactControl.createContact"><span class="glyphicon glyphicon-star-empty"></span>&nbsp;Tengiliðir</a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-user"></span> <b class="caret"></b></a>
                                 <ul class="dropdown-menu">
