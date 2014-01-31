@@ -2,6 +2,7 @@
 
 @import bootstrap3._
 @main("Stofna"){
+    <div id="message"></div>
     @helper.form(action = routes.MakeDemand.doMakeDemand, 'id -> "demandForm") {
         <div class="row" xmlns="http://www.w3.org/1999/html">
             <div class="form-group">
@@ -11,6 +12,7 @@
                     class="form-control"
                     id="amount"
                     name="amount"
+                    placeholder="0 kr."
                     />
                     <span class="help-block"></span>
                     <span class="help-block"></span>
@@ -26,7 +28,7 @@
             </div>
         </div>
         <div class="row">
-        @text(theForm("description"), label = "Vegna", maxlength = 150)
+        @text(theForm("description"), label = "Vegna", maxlength = 150, placeholder = "Lýsing")
         </div>
         <div class="row">
         <div class="form-group">
@@ -36,14 +38,15 @@
                 <input type="text"
                 class="form-control"
                 id="tempRecipient"
-                name="tempRecipient"/>
+                name="tempRecipient"
+                placeholder="Nafn og kennitala"/>
                 <div class="input-group-btn">
                     <a href="#" id="addRecButton" class="btn btn-info" role="button">
                         <span class="glyphicon glyphicon-plus"></span>
                     </a>
                 </div>
                 </div>
-                <span class="help-block">Verður að innihalda kennitölu</span>
+                <span class="help-block"></span>
                 <span class="help-block"></span>
             </div>
         </div>
