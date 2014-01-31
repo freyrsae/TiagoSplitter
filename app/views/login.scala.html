@@ -4,6 +4,12 @@
 
 
 @main("Memento", false) {
+    <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
+    <div class="row">
+        <img src="@routes.Assets.at("images/memento-logo-nobg.jpg")" width="140" height="140" class="center-block" alt="Lógó">
+    </div>
+
+
     @flashMessages()
     @helper.form(action = routes.Application.authenticate) {
         @text(theForm("email"), label = "Netfang", inputType = "email")
@@ -13,6 +19,6 @@
             <input class="btn btn-primary" type="submit" value="Skrá inn">
         </div>
 
-        <p>Notendur eru a@@a.com, b@@b.com og c@@c.com, öll með lykilorð secret (alice er admin)</p>
     }
-}
+    </div>
+}                                                       s
