@@ -18,7 +18,6 @@ import java.sql.Timestamp
 case class Demand(id: Option[Long] = None,
                   userEmail: String,
                   amount: Int,
-                  perPerson: Boolean,
                   description: String,
                   status: String,
                   timeStamp: Timestamp = new Timestamp(System.currentTimeMillis())
@@ -34,12 +33,11 @@ object Demands extends Table[Demand]("demands") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def userEmail = column[String]("user_email")
   def amount = column[Int]("amount")
-  def perPerson = column[Boolean]("per_person")
   def description = column[String]("description")
   def status = column[String]("status")
   def timestamp = column[Timestamp]("timestamp")
-  def * = id.? ~ userEmail ~ amount ~ perPerson ~ description ~  status ~ timestamp  <> (Demand.apply _, Demand.unapply _)
-  def autoInc = id.? ~ userEmail ~ amount ~ perPerson ~ description ~ status ~ timestamp <> (Demand.apply _, Demand.unapply _) returning id
+  def * = id.? ~ userEmail ~ amount ~ description ~  status ~ timestamp  <> (Demand.apply _, Demand.unapply _)
+  def autoInc = id.? ~ userEmail ~ amount ~ description ~ status ~ timestamp <> (Demand.apply _, Demand.unapply _) returning id
   def client = foreignKey("user_demand_fk", userEmail, Users)(_.email)
 
   val recipientsSeperator = ";"
@@ -55,11 +53,19 @@ object Demands extends Table[Demand]("demands") {
   }
 
   def create(email: String, demand: DemandNoIds): Long = DB.withSession{
-    val dbDemand = Demand(userEmail = email, amount = demand.amount, perPerson = isPerPerson(demand.perPerson), description = demand.description, status = Demands.freshDemand)
-    val demandId = autoInc.insert(dbDemand)
     val recsWithAmounts = recipientsWithAmountsList(demand)
+    val dbDemand = Demand(userEmail = email, amount = calculateAmount(demand.amount, isPerPerson(demand.perPerson), recsWithAmounts.length), description = demand.description, status = Demands.freshDemand)
+    val demandId = autoInc.insert(dbDemand)
     recsWithAmounts.map(x => Recipients.create(Recipient(demandId = demandId, name = x._1, amount = x._2, paid = false)))
     demandId
+  }
+
+  private def calculateAmount(inputAmount: Int, perPerson: Boolean, numberOfRecipients: Int): Int = {
+    if(perPerson){
+      inputAmount * numberOfRecipients
+    }else{
+      inputAmount
+    }
   }
 
   private def isPerPerson(s: Option[String]): Boolean = {

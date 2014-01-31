@@ -17,7 +17,7 @@
 
                 </tr>
             }
-            <tr class="active"><td>Samtals:</td><td>@demand.amount kr.</td><td></td><td></td></tr>
+            <tr class="active"><td>Samtals:</td><td>@Recipients.findByDemand(demand.id.get).foldLeft(0)((r,c) => r + c.amount) kr.</td><td></td><td></td></tr>
             <tr class="active"><td>Vegna: </td><td>@demand.description</td><td></td><td></td></tr>
             <tr class="active"><td>Stofnuð: </td><td>@demand.getDate</td><td></td><td></td></tr>
         </tbody>

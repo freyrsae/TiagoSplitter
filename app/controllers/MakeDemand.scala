@@ -33,10 +33,7 @@ object MakeDemand extends Controller with Secured{
 
   def doMakeDemand = IsAuthenticated{ email => implicit request =>
     try{
-      println("doMake")
-      println(demandForm.bindFromRequest().data.get("perPerson"))
       val demand = demandForm.bindFromRequest().get
-      println("perPerson" + demand.perPerson)
       val demandId = Demands.create(email, demand)
       //todo kveikja á þegar fer í loftið
       MailerUtil.sendNotificationMail(email, demandId, demand.amount, demand.description, demand.recipients.mkString(", "), request)
