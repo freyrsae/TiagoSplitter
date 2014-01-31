@@ -27,6 +27,10 @@ case class Demand(id: Option[Long] = None,
     val format = new java.text.SimpleDateFormat("dd-MM-yyyy hh:mm")
     format.format(this.timeStamp)
   }
+  def getDateNoTime = {
+    val format = new java.text.SimpleDateFormat("dd-MM-yyyy")
+    format.format(this.timeStamp)
+  }
 }
 
 object Demands extends Table[Demand]("demands") {

@@ -1,11 +1,13 @@
 @(listOfDemands: List[models.Demand], isAdmin: Boolean = false)
 
 @main("Listi yfir áminningar"){
+    @if(!listOfDemands.isEmpty){
     <table class="table table-striped">
         <thead>
             @if(isAdmin){
                 <th>Eigandi</th>
             }
+            <th>Dagsetning</th>
             <th>Upphæð</th>
             <th>Vegna</th>
             <th>Móttakendur</th>
@@ -18,6 +20,7 @@
                     @if(isAdmin){
                         <td>@d.userEmail</td>
                     }
+                    <td>@d.getDateNoTime</td>
                     <td>@d.amount kr.</td>
                     <td>@d.description</td>
                     <td><ul class="list-unstyled">@Recipients.findByDemand(d.id.get).map{x =>
@@ -32,4 +35,7 @@
             }
         </tbody>
     </table>
+    }else{
+        <h4 class="text-center">Ekkert komið ennþá, endilega farðu í rukka til að búa til þína fyrstu rukkun.</h4>
+    }
 }
