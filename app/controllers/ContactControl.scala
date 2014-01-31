@@ -19,7 +19,8 @@ object ContactControl extends Controller with Secured{
   val contactForm = Form(
     tuple(
       "kennitala" -> text,
-      "name" -> text
+      "name" -> text,
+      "email" -> text
     )
   )
 
@@ -30,7 +31,7 @@ object ContactControl extends Controller with Secured{
   def doCreateContact = IsAuthenticated{ email => implicit request =>
     try{
       val contact = contactForm.bindFromRequest().get
-      Contacts.create(Contact(kennitala = contact._1, name = contact._2, userEmail = email))
+      Contacts.create(Contact(kennitala = contact._1, name = contact._2, contactEmail = contact._3, userEmail = email))
       Redirect(routes.ContactControl.createContact).flashing(
         "success" -> "Tengilið hefur verið bætt við"
       )
@@ -43,7 +44,7 @@ object ContactControl extends Controller with Secured{
   }
 
   def searchContacts(term: String) = IsAuthenticated{ email => implicit request =>
-    val jsonArr = new JSONArray(Contacts.searchInContacts(term, email).map(x => s"${x.name}, ${x.kennitala}"))
+    val jsonArr = new JSONArray(Contacts.searchInContacts(term, email).map(x => s"${x.name}, ${x.contactEmail}, ${x.kennitala}"))
     Ok(jsonArr.toString())
   }
 

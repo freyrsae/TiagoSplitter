@@ -14,16 +14,17 @@ import play.api.db.slick.DB
 import play.api.Play.current
 import Database.threadLocalSession
 
-case class Contact(id: Option[Long] = None, kennitala: String, name: String, userEmail: String)
+case class Contact(id: Option[Long] = None, kennitala: String, name: String, contactEmail: String, userEmail: String)
 
 object Contacts extends Table[Contact]("contacts"){
 
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def kennitala = column[String]("kennitala")
   def name = column[String]("name")
+  def contactEmail = column[String]("contactEmail")
   def userEmail = column[String]("userEmail")
 
-  def * = id.? ~ kennitala ~ name ~ userEmail <> (Contact.apply _, Contact.unapply _)
+  def * = id.? ~ kennitala ~ name ~ contactEmail ~ userEmail <> (Contact.apply _, Contact.unapply _)
   def client = foreignKey("user_contact_fk", userEmail, Users)(_.email)
 
   def create(contact: Contact) = DB.withSession{

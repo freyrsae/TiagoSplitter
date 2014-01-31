@@ -1,4 +1,4 @@
-@(theForm: Form[(String, String)], listOfContacts: List[models.Contact])(implicit flash: Flash)
+@(theForm: Form[(String, String, String)], listOfContacts: List[models.Contact])(implicit flash: Flash)
 
 @import bootstrap3._
 
@@ -6,6 +6,7 @@
     @flashMessages()
     @helper.form(action = routes.ContactControl.doCreateContact) {
         @text(theForm("name"), label = "Nafn")
+        @text(theForm("email"), label = "Netfang")
         @text(theForm("kennitala"), label = "Kennitala", inputType = "tel", pattern = ".{10,10}")
 
         <div class="pull-right">
@@ -25,12 +26,14 @@
     <table class="table table-striped">
         <thead>
             <th>Nafn</th>
+            <th>Netfang</th>
             <th>Kennitala</th>
         </thead>
         <tbody>
         @for(c <- listOfContacts){
             <tr>
                 <td>@c.name</td>
+                <td>@c.contactEmail</td>
                 <td>@c.kennitala</td>
             </tr>
         }

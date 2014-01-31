@@ -3,7 +3,7 @@
 
 # --- !Ups
 
-create table `contacts` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`kennitala` VARCHAR(254) NOT NULL,`name` VARCHAR(254) NOT NULL,`userEmail` VARCHAR(254) NOT NULL);
+create table `contacts` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`kennitala` VARCHAR(254) NOT NULL,`name` VARCHAR(254) NOT NULL,`contactEmail` VARCHAR(254) NOT NULL,`userEmail` VARCHAR(254) NOT NULL);
 create table `demands` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`user_email` VARCHAR(254) NOT NULL,`amount` INTEGER NOT NULL,`description` VARCHAR(254) NOT NULL,`status` VARCHAR(254) NOT NULL,`timestamp` TIMESTAMP NOT NULL);
 create table `recipients` (`id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,`demandId` BIGINT NOT NULL,`name` VARCHAR(254) NOT NULL,`amount` INTEGER NOT NULL,`paid` BOOLEAN NOT NULL);
 create table `users` (`email` VARCHAR(254) NOT NULL PRIMARY KEY,`name` VARCHAR(254) NOT NULL,`pass` VARCHAR(254) NOT NULL,`kennitala` VARCHAR(254) NOT NULL,`account_no` VARCHAR(254) NOT NULL,`role` VARCHAR(254));
