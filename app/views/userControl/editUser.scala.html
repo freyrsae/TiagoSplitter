@@ -1,4 +1,4 @@
-@(theForm: Form[(String,String)])(implicit flash: Flash)
+@(theForm: Form[(String,String,String, String)])(implicit flash: Flash)
 
 
 @import bootstrap3._
@@ -7,7 +7,9 @@
     @flashMessages()
     @helper.form(action = routes.UserControl.doEditUser) {
         @text(theForm("name"), label = "Nafn")
-        @password(theForm("password"), label = "Lykilorð")
+        @text(theForm("kennitala"), label = "Kennitala")
+        @text(theForm("accountNo"), label = "Reikningsnúmer")
+        @password(theForm("password"), label = "Lykilorð", help="Skildu eftir autt ef þú vilt halda lykilorði óbreyttu")
 
         <div class="pull-right">
             <input class="btn btn-primary" type="submit" value="Breyta">

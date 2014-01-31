@@ -1,4 +1,4 @@
-@(theForm: Form[(String,String, String)], userList: List[models.User])(implicit flash: Flash)
+@(theForm: Form[(String,String, String, String, String)], userList: List[models.User])(implicit flash: Flash)
 
 @import bootstrap3._
 
@@ -7,8 +7,10 @@
 <a href="@routes.MakeDemand.listOfDemandsAdmin" class="btn btn-default">Listi yfir áminningar</a>
 <div>
 @helper.form(action = routes.UserControl.createUser) {
-    @text(theForm("email"), label = "Netfang")
     @text(theForm("name"), label = "Nafn")
+    @text(theForm("kennitala"), label = "Kennitala")
+    @text(theForm("accountNo"), label = "Reikningsnúmer")
+    @text(theForm("email"), label = "Netfang")
     @password(theForm("password"), label = "Lykilorð")
 
     <div class="pull-right">

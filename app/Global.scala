@@ -15,9 +15,9 @@ object Global extends GlobalSettings {
     //    ConnectionPool.singleton("jdbc:h2:mem:play", "sa", "")
     if(Users.findAll.isEmpty){
       Seq(
-          User(email = "a@a.com", name = "alice", pass = "secret", role = Some("admin")),
-          User(email = "b@b.com", name = "bob", pass = "secret"),
-          User(email = "c@c.com", name = "chris", pass = "secret")
+          User(email = "a@a.com", name = "alice", pass = "secret",kennitala = "1234567890", accountNo = "1234567890", role = Some("admin")),
+          User(email = "b@b.com", name = "bob", pass = "secret",kennitala = "1234567890", accountNo = "1234567890"),
+          User(email = "c@c.com", name = "chris", pass = "secret",kennitala = "1234567890", accountNo = "1234567890")
       ) foreach Users.create
     }
   }

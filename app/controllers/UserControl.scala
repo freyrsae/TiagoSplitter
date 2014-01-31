@@ -19,7 +19,9 @@ object UserControl extends Controller with Secured {
     tuple(
       "email" -> text,
       "name" -> text,
-      "password" -> text
+      "password" -> text,
+      "kennitala" -> text,
+      "accountNo" -> text
     )
   )
 
@@ -30,7 +32,7 @@ object UserControl extends Controller with Secured {
   def createUser = IsAdminAuthenticated{email => implicit request =>
     try{
       val newUser = newUserForm.bindFromRequest().get
-      Users.create(User(email = newUser._1, name = newUser._2, pass = newUser._3))
+      Users.create(User(email = newUser._1, name = newUser._2, pass = newUser._3, kennitala = newUser._4, accountNo = newUser._5))
       Redirect(routes.UserControl.admin).flashing(
         "success" -> "Nýr notandi hefur verið gerður"
       )
@@ -46,18 +48,21 @@ object UserControl extends Controller with Secured {
   val editUserForm = Form(
     tuple(
       "name" -> text,
-      "password" -> text
+      "password" -> text,
+      "kennitala" -> text,
+      "accountNo" -> text
     )
   )
 
   def editUser = IsAuthenticated{email => implicit request =>
-    Ok(html.userControl.editUser(editUserForm))
+    val user = Users.findByEmail(email)
+    Ok(html.userControl.editUser(editUserForm.fill(user.name, "", user.kennitala, user.accountNo)))
   }
 
   def doEditUser = IsAuthenticated{email => implicit request =>
     try{
       val editUser = editUserForm.bindFromRequest().get
-      Users.edit(email, editUser._1, editUser._2)
+      Users.edit(email, editUser._1, editUser._2, editUser._3, editUser._4)
       Redirect(routes.UserControl.editUser).flashing(
         "success" -> "Notendaupplýsingum hefur verið breytt"
       )
