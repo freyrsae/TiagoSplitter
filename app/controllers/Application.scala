@@ -88,11 +88,11 @@ trait Secured {
     }
   }
 
-  def IsOwnerOfDemand(demandId: Long)(f: => String => Request[AnyContent] => Result) = IsAuthenticated { client => request =>
-    if(Demands.isOwner(demandId, client) || Users.isAdmin(client)) {
+  def IsOwner(id: Long, isOwnerCheck: (Long, String) => Boolean, errorMessage: String = "Þú ert ekki réttur eigandi")(f: => String => Request[AnyContent] => Result) = IsAuthenticated { client => request =>
+    if(isOwnerCheck(id, client) || Users.isAdmin(client)) {
       f(client)(request)
     } else {
-      Results.Forbidden("Þú átt ekki þessa kröfu")
+      Results.Forbidden(errorMessage)
     }
   }
 
