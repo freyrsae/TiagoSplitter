@@ -25,7 +25,7 @@ object ContactControl extends Controller with Secured{
   )
 
   def createContact = IsAuthenticated{ email => implicit request =>
-    Ok(views.html.contacts.createContact(contactForm, Contacts.findByUser(email)))
+    Ok(views.html.contacts.createContact(contactForm, Contacts.findByUser(email).sortBy(x => x.name)))
   }
 
   def doCreateContact = IsAuthenticated{ email => implicit request =>
