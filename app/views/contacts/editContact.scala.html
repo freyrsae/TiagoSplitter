@@ -1,0 +1,16 @@
+@(id: Long, theForm: Form[(String, String, String)])(implicit flash: Flash)
+
+@import bootstrap3._
+
+@main("Breyta tengilið"){
+    @flashMessages()
+    @helper.form(action = routes.ContactControl.doEditContact(id)) {
+        @text(theForm("name"), label = "Nafn")
+        @text(theForm("email"), label = "Netfang", inputType = "email")
+        @text(theForm("kennitala"), label = "Kennitala", inputType = "tel", pattern = ".{10,10}")
+
+        <div class="pull-right">
+            <input class="btn btn-primary" type="submit" value="Breyta">
+        </div>
+    }
+}

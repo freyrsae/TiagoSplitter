@@ -6,7 +6,7 @@
     @flashMessages()
     @helper.form(action = routes.ContactControl.doCreateContact) {
         @text(theForm("name"), label = "Nafn")
-        @text(theForm("email"), label = "Netfang")
+        @text(theForm("email"), label = "Netfang", inputType = "email")
         @text(theForm("kennitala"), label = "Kennitala", inputType = "tel", pattern = ".{10,10}")
 
         <div class="pull-right">
@@ -28,6 +28,7 @@
             <th>Nafn</th>
             <th>Netfang</th>
             <th>Kennitala</th>
+            <th></th>
         </thead>
         <tbody>
         @for(c <- listOfContacts){
@@ -35,6 +36,7 @@
                 <td>@c.name</td>
                 <td>@c.contactEmail</td>
                 <td>@c.kennitala</td>
+                <td><a href="@routes.ContactControl.editContact(c.id.get)">Breyta</a> / <a class="text-danger" href="@routes.ContactControl.deleteContact(c.id.get)">Eyða</a></td>
             </tr>
         }
         </tbody>

@@ -26,6 +26,9 @@ GET         /skoda/:demandId             controllers.MakeDemand.show(demandId: L
 
 GET         /tengilidir/bua-til          controllers.ContactControl.createContact
 POST        /tengilidir/bua-til          controllers.ContactControl.doCreateContact
+GET         /tengilidir/breyta           controllers.ContactControl.editContact(id: Long ?= 0)
+POST        /tengilidir/breyta           controllers.ContactControl.doEditContact(id: Long ?= 0)
+GET         /tengilidir/eyda             controllers.ContactControl.deleteContact(id: Long ?= 0)
 GET         /tengilidir/leit             controllers.ContactControl.searchContacts(term: String ?= "")
 
 # Map static resources from the /public folder to the /assets URL path

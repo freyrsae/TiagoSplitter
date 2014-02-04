@@ -43,6 +43,44 @@ object ContactControl extends Controller with Secured{
     }
   }
 
+  def editContact(id: Long) = IsOwner(id, Contacts.isOwner){ email => implicit request =>
+    val contact = Contacts.findContactById(id)
+    Ok(views.html.contacts.editContact(id, contactForm.fill(contact.kennitala, contact.name, contact.contactEmail)))
+
+  }
+
+  def doEditContact(id: Long) = IsOwner(id, Contacts.isOwner){ email => implicit request =>
+
+    try{
+      val editContact = contactForm.bindFromRequest().get
+      Contacts.edit(id, Contact(id = Some(id), kennitala = editContact._1, name = editContact._2, contactEmail = editContact._3, userEmail = email))
+      Redirect(routes.ContactControl.createContact).flashing(
+        "success" -> "Tengilið hefur verið breytt"
+      )
+    }
+    catch {
+      case e: Exception => Redirect(routes.ContactControl.createContact).flashing(
+        "danger" -> "Mistókst að breyta tengilið"
+      )
+    }
+
+
+  }
+
+  def deleteContact(id: Long) = IsOwner(id, Contacts.isOwner){ email => implicit request =>
+    try{
+      Contacts.delete(id)
+      Redirect(routes.ContactControl.createContact).flashing(
+      "success" -> "Tengilið hefur verið eytt"
+      )
+    }
+    catch {
+      case e: Exception => Redirect(routes.ContactControl.createContact).flashing(
+        "danger" -> "Ekki tókst að eyða tengilið"
+      )
+    }
+  }
+
   def searchContacts(term: String) = IsAuthenticated{ email => implicit request =>
     val jsonArr = new JSONArray(Contacts.searchInContacts(term, email).map(x => s"${x.name}, ${x.contactEmail}, ${x.kennitala}"))
     Ok(jsonArr.toString())

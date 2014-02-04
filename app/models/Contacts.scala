@@ -31,6 +31,22 @@ object Contacts extends Table[Contact]("contacts"){
     *.insert(contact)
   }
 
+  def delete(id: Long) = DB.withSession{
+    findById(id).delete
+  }
+
+  def edit(id: Long, contact: Contact) = DB.withSession{
+    findById(id).update(contact)
+  }
+
+  def findById(id: Long) = {
+    (for {c <- Contacts if c.id === id} yield c)
+  }
+
+  def findContactById(id: Long) = DB.withSession{
+    findById(id).list().head
+  }
+
   def findByUser(email: String) = DB.withSession{
     (for {c <- Contacts if c.userEmail === email} yield c).list()
   }
@@ -39,4 +55,7 @@ object Contacts extends Table[Contact]("contacts"){
     (for {c <- Contacts if (c.userEmail === email && (c.name like "%" + term + "%"))} yield c).list()
   }
 
+  def isOwner(id: Long, user: String): Boolean = DB.withSession{
+    !(for { c <- Contacts if (c.id === id && c.userEmail === user) } yield c).list().isEmpty
+  }
 }
