@@ -32,18 +32,23 @@ object MakeDemand extends Controller with Secured{
   }
 
   def doMakeDemand = IsAuthenticated{ email => implicit request =>
-    try{
-      val demand = demandForm.bindFromRequest().get
-      val demandId = Demands.create(email, demand)
-      //todo kveikja á þegar fer í loftið
-      MailerUtil.sendNotificationMail(email, demandId, demand.amount, demand.description, demand.recipients.mkString(", "), request)
-      Redirect(routes.MakeDemand.show(demandId))
-    }
-    catch {
-      case e: Exception => Redirect(routes.MakeDemand.makeDemand).flashing(
-        "danger" -> "Mistókst að stofna kröfu"
-      )
-    }
+    demandForm.bindFromRequest().fold(
+    formWithErrors => {
+      BadRequest(views.html.demand.makeDemand(formWithErrors))
+    },
+    demand => {
+        try{
+          val demandId = Demands.create(email, demand)
+          //MailerUtil.sendNotificationMail(email, demandId, demand.amount, demand.description, demand.recipients.mkString(", "), request)
+          Redirect(routes.MakeDemand.show(demandId))
+        }
+        catch {
+          case e: Exception => Redirect(routes.MakeDemand.makeDemand).flashing(
+            "danger" -> "Mistókst að stofna kröfu"
+          )
+        }
+      }
+    )
   }
 
   def show(demandId: Long) = IsOwner(demandId, Demands.isOwner){ email => implicit request =>

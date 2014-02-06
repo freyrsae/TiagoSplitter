@@ -7,12 +7,13 @@ import play.api.data.Forms._
 import views.html
 import models.{Demands, User, Users}
 import play.mvc.Results.Redirect
+import utils.Validation
 
 object Application extends Controller with Secured {
 
   val loginForm = Form(
     tuple(
-      "email" -> text,
+      "email" -> text.verifying(Validation.emailCheck),
       "password" -> text
     ) verifying ("Invalid email or password", result => result match {
       case (email, password) => Users.authenticate(email, password)

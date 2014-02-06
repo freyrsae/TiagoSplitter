@@ -4,10 +4,10 @@
 
 @main("Búa til tengilið"){
     @flashMessages()
-    @helper.form(action = routes.ContactControl.doCreateContact) {
+    @helper.form(action = routes.ContactControl.doCreateContact, 'novalidate -> "") {
         @text(theForm("name"), label = "Nafn")
         @text(theForm("email"), label = "Netfang", inputType = "email")
-        @text(theForm("kennitala"), label = "Kennitala", inputType = "tel", pattern = ".{10,10}")
+        @text(theForm("kennitala"), label = "Kennitala", inputType = "tel")
 
         <div class="pull-right">
             <input class="btn btn-primary" type="submit" value="Bæta við">

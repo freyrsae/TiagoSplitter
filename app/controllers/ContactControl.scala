@@ -5,6 +5,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import models.{Contact, Contacts, Demand, Demands}
 import scala.util.parsing.json.JSONArray
+import utils.Validation
 
 
 /**
@@ -18,9 +19,9 @@ object ContactControl extends Controller with Secured{
 
   val contactForm = Form(
     tuple(
-      "kennitala" -> text,
+      "kennitala" -> text.verifying(Validation.kennitalaCheck),
       "name" -> text,
-      "email" -> text
+      "email" -> text.verifying(Validation.emailCheck)
     )
   )
 
@@ -29,18 +30,24 @@ object ContactControl extends Controller with Secured{
   }
 
   def doCreateContact = IsAuthenticated{ email => implicit request =>
-    try{
-      val contact = contactForm.bindFromRequest().get
-      Contacts.create(Contact(kennitala = contact._1, name = contact._2, contactEmail = contact._3, userEmail = email))
-      Redirect(routes.ContactControl.createContact).flashing(
-        "success" -> "Tengilið hefur verið bætt við"
-      )
+    contactForm.bindFromRequest.fold(
+      formWithErrors => {
+        BadRequest(views.html.contacts.createContact(formWithErrors, Contacts.findByUser(email).sortBy(x => x.name)))
+    },
+      contactData => {
+        try{
+          Contacts.create(Contact(kennitala = contactData._1, name = contactData._2, contactEmail = contactData._3, userEmail = email))
+          Redirect(routes.ContactControl.createContact).flashing(
+            "success" -> "Tengilið hefur verið bætt við"
+          )
+        }
+        catch {
+          case e: Exception => Redirect(routes.ContactControl.createContact).flashing(
+            "danger" -> "Mistókst að bæta við tengilið"
+          )
+        }
     }
-    catch {
-      case e: Exception => Redirect(routes.ContactControl.createContact).flashing(
-        "danger" -> "Mistókst að bæta við tengilið"
-      )
-    }
+    )
   }
 
   def editContact(id: Long) = IsOwner(id, Contacts.isOwner){ email => implicit request =>

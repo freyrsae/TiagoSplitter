@@ -5,6 +5,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import views.html
 import models.{User, Users}
+import utils.Validation
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,10 +18,10 @@ object UserControl extends Controller with Secured {
 
   val newUserForm = Form(
     tuple(
-      "email" -> text,
+      "email" -> text.verifying(Validation.emailCheck),
       "name" -> text,
       "password" -> text,
-      "kennitala" -> text,
+      "kennitala" -> text.verifying(Validation.kennitalaCheck),
       "accountNo" -> text
     )
   )
@@ -30,18 +31,24 @@ object UserControl extends Controller with Secured {
   }
 
   def createUser = IsAdminAuthenticated{email => implicit request =>
-    try{
-      val newUser = newUserForm.bindFromRequest().get
-      Users.create(User(email = newUser._1, name = newUser._2, pass = newUser._3, kennitala = newUser._4, accountNo = newUser._5))
-      Redirect(routes.UserControl.admin).flashing(
-        "success" -> "Nýr notandi hefur verið gerður"
-      )
+    newUserForm.bindFromRequest().fold(
+    formWithErrors => {
+      BadRequest(html.userControl.admin(formWithErrors, Users.findAll))
+    },
+    userData => {
+      try{
+        Users.create(User(email = userData._1, name = userData._2, pass = userData._3, kennitala = userData._4, accountNo = userData._5))
+        Redirect(routes.UserControl.admin).flashing(
+          "success" -> "Nýr notandi hefur verið gerður"
+        )
+      }
+      catch {
+        case e: Exception => Redirect(routes.UserControl.admin).flashing(
+          "danger" -> "Mistókst að gera nýjan notanda"
+        )
+      }
     }
-    catch {
-      case e: Exception => Redirect(routes.UserControl.admin).flashing(
-        "danger" -> "Mistókst að gera nýjan notanda"
-      )
-    }
+    )
 
   }
 
@@ -49,7 +56,7 @@ object UserControl extends Controller with Secured {
     tuple(
       "name" -> text,
       "password" -> text,
-      "kennitala" -> text,
+      "kennitala" -> text.verifying(Validation.kennitalaCheck),
       "accountNo" -> text
     )
   )
@@ -60,18 +67,24 @@ object UserControl extends Controller with Secured {
   }
 
   def doEditUser = IsAuthenticated{email => implicit request =>
-    try{
-      val editUser = editUserForm.bindFromRequest().get
-      Users.edit(email, editUser._1, editUser._2, editUser._3, editUser._4)
-      Redirect(routes.UserControl.editUser).flashing(
-        "success" -> "Notendaupplýsingum hefur verið breytt"
-      )
+    editUserForm.bindFromRequest().fold(
+    formWithErrors => {
+      BadRequest(html.userControl.editUser(formWithErrors))
+    },
+    userData => {
+      try{
+        Users.edit(email, userData._1, userData._2, userData._3, userData._4)
+        Redirect(routes.UserControl.editUser).flashing(
+          "success" -> "Notendaupplýsingum hefur verið breytt"
+        )
+      }
+      catch {
+        case e: Exception => Redirect(routes.UserControl.editUser).flashing(
+          "danger" -> "Mistókst að breyta notendaupplýsingum"
+        )
+      }
     }
-    catch {
-      case e: Exception => Redirect(routes.UserControl.editUser).flashing(
-        "danger" -> "Mistókst að breyta notendaupplýsingum"
-      )
-    }
+    )
   }
 
 }
