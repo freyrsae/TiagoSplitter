@@ -12,6 +12,11 @@
 
 
     @helper.form(action = routes.Application.authenticate) {
+        @theForm.globalError.map { error =>
+            <div class="alert alert-danger">
+                @error.message
+            </div>
+        }
         @text(theForm("email"), label = "Netfang", inputType = "email")
         @password(theForm("password"), label = "Lykilorð")
 
