@@ -40,7 +40,9 @@ object MakeDemand extends Controller with Secured{
         try{
           val demandId = Demands.create(email, demand)
           //MailerUtil.sendNotificationMail(email, demandId, demand.amount, demand.description, demand.recipients.mkString(", "), request)
-          Redirect(routes.MakeDemand.show(demandId))
+          Redirect(routes.MakeDemand.show(demandId)).flashing(
+            "success" -> "Stofnuð hefur verið rukkun með eftirfarandi upplýsingum"
+          )
         }
         catch {
           case e: Exception => Redirect(routes.MakeDemand.makeDemand).flashing(
