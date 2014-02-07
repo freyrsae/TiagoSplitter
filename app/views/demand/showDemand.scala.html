@@ -1,8 +1,7 @@
-@(demand: models.Demand, isAdmin: Boolean = false)
+@(demand: models.Demand, isAdmin: Boolean = false)(implicit flash: Flash )
 
 @main("Áminning"){
-    <h2>Stofnuð hefur verið rukkun með eftirfarandi upplýsingum:</h2>
-
+    @flashMessages()
     <table class="table">
         <tbody>
             @for(r <- Recipients.findByDemand(demand.id.get)){
