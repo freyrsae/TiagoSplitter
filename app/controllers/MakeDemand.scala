@@ -88,7 +88,7 @@ object MakeDemand extends Controller with Secured{
     Redirect(routes.MakeDemand.show(demandId))
   }
 
-  def markAsPaid(recipientId: Long, demandId: Long) = IsAdminAuthenticated{ email => implicit request =>
+  def markAsPaid(recipientId: Long, demandId: Long) = IsOwner(demandId, Demands.isOwner){ email => implicit request =>
 
     Recipients.markAsPaid(recipientId)
     Redirect(routes.MakeDemand.show(demandId))
