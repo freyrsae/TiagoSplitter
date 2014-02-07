@@ -44,7 +44,7 @@ object MakeDemand extends Controller with Secured{
         }
         catch {
           case e: Exception => Redirect(routes.MakeDemand.makeDemand).flashing(
-            "danger" -> "Mistókst að stofna kröfu"
+            "danger" -> "Mistókst að stofna rukkun"
           )
         }
       }
@@ -59,12 +59,12 @@ object MakeDemand extends Controller with Secured{
     try{
       Demands.delete(demandId)
       Redirect(routes.Application.index).flashing(
-        "success" -> "Áminningu hefur verið eytt"
+        "success" -> "Rukkun hefur verið eytt"
       )
     }
     catch {
       case e: Exception => Redirect(routes.Application.index).flashing(
-        "danger" -> "Mistókst að hætta við áminningu"
+        "danger" -> "Mistókst að hætta við rukkun"
       )
     }
   }
