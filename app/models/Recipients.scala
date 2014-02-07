@@ -33,8 +33,14 @@ object Recipients extends Table[Recipient]("recipients"){
     *.insert(recipient)
   }
 
+  private def findBy(demandId: Long) = (for { r <- Recipients if r.demandId === demandId } yield r)
+
   def findByDemand(demandId: Long)= DB.withSession{
-    (for { r <- Recipients if r.demandId === demandId } yield r).list()
+    findBy(demandId).list()
+  }
+
+  def deleteByDemand(demandId: Long) = DB.withSession{
+    findBy(demandId).delete
   }
 
   def markAsPaid(id: Long) = DB.withSession{

@@ -90,6 +90,7 @@ object Demands extends Table[Demand]("demands") {
 
   def delete(id: Long) = DB.withSession{
     if(findDemandById(id).status == freshDemand){
+      Recipients.deleteByDemand(id)
       findById(id).delete
     }else{
       throw new UnsupportedOperationException
