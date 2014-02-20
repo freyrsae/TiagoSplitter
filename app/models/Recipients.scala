@@ -39,6 +39,14 @@ object Recipients extends Table[Recipient]("recipients"){
     findBy(demandId).list()
   }
 
+  def numberOfPaidRecipients(demandId: Long) = DB.withSession{
+    Recipients.findBy(demandId).filter(_.paid === true).list().length
+  }
+
+  def numberOfRecipients(demandId: Long) = DB.withSession{
+    Recipients.findBy(demandId).list().length
+  }
+
   def deleteByDemand(demandId: Long) = DB.withSession{
     findBy(demandId).delete
   }
@@ -47,5 +55,10 @@ object Recipients extends Table[Recipient]("recipients"){
     findById(id).map{ r =>
       r.paid
     }.update(paid)
+
+    val demandId = findById(id).map(_.demandId).first()
+    if(Demands.findById(demandId).map(_.status).first() != Demands.freshDemand){
+      Demands.setNewStatus(findById(id).map(_.demandId).first())
+    }
   }
 }

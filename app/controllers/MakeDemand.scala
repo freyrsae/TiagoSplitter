@@ -86,7 +86,7 @@ object MakeDemand extends Controller with Secured{
 
   def setStatusToSent(demandId: Long) = IsAdminAuthenticated{ email => implicit request =>
 
-    Demands.setStatusToSent(demandId)
+    Demands.setNewStatus(demandId)
     Redirect(routes.MakeDemand.show(demandId))
   }
 
@@ -101,6 +101,4 @@ object MakeDemand extends Controller with Secured{
     Recipients.markAsPaid(recipientId, false)
     Redirect(routes.MakeDemand.show(demandId))
   }
-
-
 }

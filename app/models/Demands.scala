@@ -46,7 +46,6 @@ object Demands extends Table[Demand]("demands") {
 
   val recipientsSeperator = ";"
   val freshDemand = "Ný"
-  val sentDemand = "Send"
 
   def findById(id: Long) = DB.withSession{
     for { d <- Demands if d.id === id } yield d
@@ -105,10 +104,19 @@ object Demands extends Table[Demand]("demands") {
     (for { d <- Demands } yield d).list()
   }
 
-  def setStatusToSent(id: Long) = DB.withSession{
-    findById(id).map{ d =>
-      d.status
-    }.update(sentDemand)
+  def setNewStatus(id: Long) = DB.withSession{
+
+    def calculateStatus: String = {
+      val paidRecipientsListSize = Recipients.numberOfPaidRecipients(id)
+      val recipientsListSize = Recipients.numberOfRecipients(id)
+
+      val percent = paidRecipientsListSize * 100 / recipientsListSize
+      percent + "%"
+    }
+
+      findById(id).map{ d =>
+        d.status
+      }.update(calculateStatus)
   }
 
   def isOwner(id: Long, user: String): Boolean = DB.withSession{
