@@ -43,9 +43,9 @@ object Recipients extends Table[Recipient]("recipients"){
     findBy(demandId).delete
   }
 
-  def markAsPaid(id: Long) = DB.withSession{
+  def markAsPaid(id: Long, paid: Boolean = true) = DB.withSession{
     findById(id).map{ r =>
       r.paid
-    }.update(true)
+    }.update(paid)
   }
 }

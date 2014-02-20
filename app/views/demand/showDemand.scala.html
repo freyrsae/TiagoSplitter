@@ -11,6 +11,8 @@
                     <td>
                     @if(!r.paid){
                         <a href="@routes.MakeDemand.markAsPaid(r.id.get, demand.id.get)" class="btn btn-warning btn-xs">Búið að greiða</a>
+                    }else{
+                        <a href="@routes.MakeDemand.markAsUnPaid(r.id.get, demand.id.get)" class="btn btn-danger btn-xs">Ekki búið að greiða</a>
                     }
                     </td>
 
