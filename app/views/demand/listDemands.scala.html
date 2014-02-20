@@ -25,7 +25,7 @@
                     <td>@d.description</td>
                     <td><ul class="list-unstyled">@Recipients.findByDemand(d.id.get).map{x =>
                         <li class="@if(x.paid){text-success}else{text-danger}">
-                        @{s"${x.name}"}
+                        @{s"${x.justName}"}
                         </li>
                     }
                     </ul></td>

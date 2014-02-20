@@ -13,7 +13,11 @@ import play.api.db.slick.DB
 import play.api.Play.current
 import Database.threadLocalSession
 
-case class Recipient(id: Option[Long] = None, demandId: Long, name: String, amount: Int, paid: Boolean)
+case class Recipient(id: Option[Long] = None, demandId: Long, name: String, amount: Int, paid: Boolean){
+  def justName = {
+    this.name.split(",")(0)
+  }
+}
 
 object Recipients extends Table[Recipient]("recipients"){
 
