@@ -17,7 +17,7 @@ object MailerUtil {
   def sendNotificationMail(email: String, id: Long, amount: Int, description: String, recipients: String, request: RequestHeader) = {
     val mail = use[MailerPlugin].email
     mail.setSubject("Ný krafa!")
-    mail.setRecipient("freyr@memento-ehf.is")
+    mail.setRecipient("memento@memento-ehf.is")
     //or use a list
     mail.setFrom("memento mailer <memento@memento-ehf.is>")
     //sends html
