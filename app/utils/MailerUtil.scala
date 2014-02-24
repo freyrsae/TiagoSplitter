@@ -22,7 +22,7 @@ object MailerUtil {
     //sends html
     //mail.sendHtml("<html>html</html>" )
     //sends text/text
-    mail.sendHtml( s"Ný áminning var stofnuð af ${email}.<br> " +
+    mail.sendHtml( s"Ný rukkun var stofnuð af ${email}.<br> " +
       s"Upphæð: ${amount} <br> " +
       s"Vegna: ${description} <br> " +
       s"Móttakendur: ${recipients} <br>" +

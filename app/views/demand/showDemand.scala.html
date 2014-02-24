@@ -1,6 +1,6 @@
 @(demand: models.Demand, isAdmin: Boolean = false)(implicit flash: Flash )
 
-@main("Áminning"){
+@main("Rukkun"){
     @flashMessages()
     <table class="table">
         <tbody>
@@ -32,7 +32,7 @@
             <a href="@routes.MakeDemand.setStatusToSent(demand.id.getOrElse(0))" class="btn btn-warning">Merkja sem send</a>
         }
     }else{
-        <h4>Krafa hefur verið send fyrir þessa áminningu.</h4>
+        <h4>Krafa hefur verið send fyrir þessa rukkun.</h4>
     }
 
 }
