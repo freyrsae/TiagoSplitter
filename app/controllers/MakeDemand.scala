@@ -1,6 +1,6 @@
 package controllers
 
-import play.api.mvc.Controller
+import play.api.mvc.{Action, Controller}
 import play.api.data.Form
 import play.api.data.Forms._
 import models.{Recipients, Demand, Demands}
@@ -53,11 +53,13 @@ object MakeDemand extends Controller with Secured{
     )
   }
 
-  def show(demandId: Long) = IsOwner(demandId, Demands.isOwner){ email => implicit request =>
+  //todo gera id fyrir demand að rugli
+  def show(demandId: Long) = Action{ implicit request =>
     val demand = Demands.findDemandById(demandId)
     Ok(views.html.demand.showDemand(demand, isAdmin(request)))
   }
-  def cancel(demandId: Long) = IsOwner(demandId, Demands.isOwner){ email => implicit request =>
+
+  def cancel(demandId: Long) = IsOwner(demandId, Demands.isOwner){email => implicit request =>
     try{
       Demands.delete(demandId)
       Redirect(routes.Application.index).flashing(
@@ -100,5 +102,28 @@ object MakeDemand extends Controller with Secured{
 
     Recipients.markAsPaid(recipientId, false)
     Redirect(routes.MakeDemand.show(demandId))
+  }
+
+  val reminderForm = Form(
+    tuple(
+      "recipients" -> seq(text),
+      "message" -> text
+    )
+  )
+
+  def sendReminder(demandId: Long) = IsOwner(demandId, Demands.isOwner){ email => implicit request =>
+
+    reminderForm.bindFromRequest.fold(
+      formWithErrors => Redirect(routes.MakeDemand.show(demandId)).flashing(
+        "danger" -> "Ekki tókst að senda áminningu"
+      ),
+      reminder => try{
+        MailerUtil.sendReminderEmail(reminder._1, reminder._2, demandId, request)
+        Redirect(routes.MakeDemand.show(demandId)).flashing("success" -> "Áminning hefur verið send")
+      } catch {
+        case e: Exception => Redirect(routes.MakeDemand.show(demandId)).flashing("danger" -> "Ekki tókst að senda áminningu")
+      }
+
+    )
   }
 }

@@ -100,6 +100,11 @@ object Demands extends Table[Demand]("demands") {
     (for { d <- Demands if d.userEmail === email } yield d).list()
   }
 
+  def findOwnerName(demandId: Long) = DB.withSession{
+    (for { d <- Demands if d.id === demandId
+           u <- Users if u.email === d.userEmail} yield u).map(_.name).list().head
+  }
+
   def findAll = DB.withSession{
     (for { d <- Demands } yield d).list()
   }

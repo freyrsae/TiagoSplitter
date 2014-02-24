@@ -11,8 +11,6 @@ GET         /admin                       controllers.UserControl.admin
 POST        /admin                       controllers.UserControl.createUser
 GET         /admin/list                  controllers.MakeDemand.listOfDemandsAdmin
 GET         /setStatusToSent/:id         controllers.MakeDemand.setStatusToSent(id: Long)
-GET         /markAsPaid                  controllers.MakeDemand.markAsPaid(recipientId: Long ?= 0, demandId: Long ?= 0)
-GET         /markAsUnPaid                controllers.MakeDemand.markAsUnPaid(recipientId: Long ?= 0, demandId: Long ?= 0)
 GET         /edit                        controllers.UserControl.editUser
 POST        /edit                        controllers.UserControl.doEditUser
 
@@ -24,6 +22,9 @@ POST        /stofna                      controllers.MakeDemand.doMakeDemand
 GET         /listi                       controllers.MakeDemand.listofDemands
 GET         /haetta-vid/:demandId        controllers.MakeDemand.cancel(demandId: Long)
 GET         /skoda/:demandId             controllers.MakeDemand.show(demandId: Long)
+GET         /markAsPaid                  controllers.MakeDemand.markAsPaid(recipientId: Long ?= 0, demandId: Long ?= 0)
+GET         /markAsUnPaid                controllers.MakeDemand.markAsUnPaid(recipientId: Long ?= 0, demandId: Long ?= 0)
+POST        /sendReminder                controllers.MakeDemand.sendReminder(demandId: Long ?= 0)
 
 GET         /tengilidir/bua-til          controllers.ContactControl.createContact
 POST        /tengilidir/bua-til          controllers.ContactControl.doCreateContact

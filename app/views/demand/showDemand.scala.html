@@ -1,5 +1,7 @@
 @(demand: models.Demand, isAdmin: Boolean = false)(implicit flash: Flash )
 
+@import bootstrap3._
+
 @main("Rukkun"){
     @flashMessages()
     <table class="table">
@@ -34,5 +36,107 @@
     }else{
         <h4>Krafa hefur verið send fyrir þessa rukkun.</h4>
     }
+    <a id="reminderButton" class="btn btn-primary" href="#">Senda áminningu í tölvupósti</a>
+
+    <div id="reminderForm" class="hidden">
+
+        <br>
+        <h3>Senda áminningu</h3>
+        @helper.form(action = routes.MakeDemand.sendReminder(demand.id.get)){
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">Móttakandi</label>
+                    <div class="col-sm-10">
+                        <div class="input-group">
+                            <input type="text"
+                            class="form-control"
+                            id="tempRecipient"
+                            name="tempRecipient"
+                            placeholder="Nafn, netfang og kennitala"/>
+                            <div class="input-group-btn">
+                                <a href="#" id="addRecButton" class="btn btn-info" role="button">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </a>
+                            </div>
+                        </div>
+                        <span class="help-block"></span>
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="recs">
+            </div>
+
+            <div class="row">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Skilaboð</label>
+                <div class="col-sm-10">
+                    <textarea class="form-control"
+                    rows="3"
+                    id="message"
+                    name="message"
+                    ></textarea>
+                    <span class="help-block"></span>
+                    <span class="help-block"></span>
+                </div>
+            </div>
+            </div>
+
+            <div class="pull-right">
+                <input class="btn btn-primary" type="submit" value="Senda">
+            </div>
+        }
+    </div>
 
 }
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+    $("#reminderButton" ).click(function(e){
+        $("#reminderButton" ).addClass("hidden");
+        $("#reminderForm" ).removeClass("hidden");
+    });
+
+    $(function() {
+        $( "#tempRecipient" ).autocomplete({
+            source: "/tengilidir/leit",
+            select: function(event, ui){
+            var nameChosen = ui.item.value;
+            $("#tempRecipient" ).val(nameChosen)
+            addRecipient();
+            $("#tempRecipient" ).val("");
+            return false;
+        }
+    });
+    });
+
+    function addRecipient(){
+        var rec = $("#tempRecipient" ).val();
+        if(rec){
+        $("#tempRecipient" ).val("");
+        $("#recs" ).append('<div><input type="hidden" id="recipients_0_" name="recipients[0]" value="' + rec + '">' +
+        '<div class="col-sm-offset-2 col-sm-10"><div class="alert alert-info"><button type="button" id="closeRec" class="close" aria-hidden="true">×</button>' +
+        rec +  '<span class="pull-right recAmount text-success"></span>' +
+        '</div></div></div>');
+        renumber();
+        $("#recipientsList" ).append("<li>" + rec + "</li>");
+        }
+    };
+
+    function renumber() {
+        $('div#recs' ).children( ).children(":input").each(function(index,val) {
+        $(this).attr({"id":"recipients_"+index+"_","name":"recipients["+index+"]"});
+        });
+    }
+
+
+
+});
+
+</script>
+
+
+
