@@ -1,8 +1,8 @@
-@(demand: models.Demand, isAdmin: Boolean = false)(implicit flash: Flash )
+@(demand: models.Demand, isAdmin: Boolean = false, isOwner: Boolean = false)(implicit flash: Flash )
 
 @import bootstrap3._
 
-@main("Rukkun"){
+@main("Rukkun", isOwner){
     @flashMessages()
     <table class="table">
         <tbody>
@@ -10,13 +10,15 @@
                 <tr @if(demand.status != Demands.freshDemand){class="@if(r.paid){success}else{danger}"}>
                     <td>@r.name</td><td>@r.amount kr.</td>
                     <td>@if(r.paid){Greitt}else{Ógreitt}</td>
-                    <td>
+                <td>
+                @if(isOwner){
                     @if(!r.paid){
                         <a href="@routes.MakeDemand.markAsPaid(r.id.get, demand.id.get)" class="btn btn-warning btn-xs">Búið að greiða</a>
                     }else{
                         <a href="@routes.MakeDemand.markAsUnPaid(r.id.get, demand.id.get)" class="btn btn-danger btn-xs">Ekki búið að greiða</a>
                     }
-                    </td>
+                }
+                </td>
 
                 </tr>
             }
@@ -25,7 +27,7 @@
             <tr class="active"><td>Stofnuð: </td><td>@demand.getDate</td><td></td><td></td></tr>
         </tbody>
     </table>
-
+    @if(isOwner){
     @if(demand.status == Demands.freshDemand){
         <a href="@routes.MakeDemand.cancel(demand.id.getOrElse(0))" class="btn btn-danger">Hætta við</a>
 
@@ -88,7 +90,7 @@
             </div>
         }
     </div>
-
+    }
 }
 
 <script type="text/javascript">

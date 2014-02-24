@@ -56,7 +56,7 @@ object MakeDemand extends Controller with Secured{
   //todo gera id fyrir demand að rugli
   def show(demandId: Long) = Action{ implicit request =>
     val demand = Demands.findDemandById(demandId)
-    Ok(views.html.demand.showDemand(demand, isAdmin(request)))
+    Ok(views.html.demand.showDemand(demand, isAdmin(request), Demands.isOwner(demandId, request.session.get("email").getOrElse(""))))
   }
 
   def cancel(demandId: Long) = IsOwner(demandId, Demands.isOwner){email => implicit request =>
