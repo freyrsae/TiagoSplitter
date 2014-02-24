@@ -26,7 +26,7 @@ object MailerUtil {
     mail.sendHtml( s"Ný rukkun var stofnuð af ${email}.<br> " +
       s"Upphæð: ${amount} <br> " +
       s"Vegna: ${description} <br> " +
-      s"Móttakendur: ${recipients} <br>" +
+      s"Móttakendur: ${recipients} <br><br><br>" +
       s" <a href=http://${request.host}/skoda/${id}>Sjá nánar</a>" )
     //sends both text and html
     //mail.send( "text", "<html>html</html>")
