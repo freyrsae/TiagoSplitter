@@ -56,13 +56,10 @@ object Demands extends Table[Demand]("demands") {
   }
 
   def create(email: String, demand: DemandNoIds): String = DB.withSession{
-    println("creating")
     val recsWithAmounts = recipientsWithAmountsList(demand)
     val demandId = Validation.getRandomAlphaNumeric
     val dbDemand = Demand(id = demandId ,userEmail = email, amount = calculateAmount(demand.amount, isPerPerson(demand.perPerson), recsWithAmounts.length), description = demand.description, status = Demands.freshDemand)
-    println("made dbDemand")
     *.insert(dbDemand)
-    println("inserted")
     recsWithAmounts.map(x => Recipients.create(Recipient(demandId = demandId, name = x._1, amount = x._2, paid = false)))
     demandId
 
