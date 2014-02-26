@@ -6,34 +6,34 @@
     @flashMessages()
     <table class="table">
         <tbody>
-            @for(r <- Recipients.findByDemand(demand.id.get)){
+            @for(r <- Recipients.findByDemand(demand.id)){
                 <tr @if(demand.status != Demands.freshDemand){class="@if(r.paid){success}else{danger}"}>
                     <td>@r.name</td><td>@r.amount kr.</td>
                     <td>@if(r.paid){Greitt}else{Ógreitt}</td>
                 <td>
                 @if(isOwner){
                     @if(!r.paid){
-                        <a href="@routes.MakeDemand.markAsPaid(r.id.get, demand.id.get)" class="btn btn-warning btn-xs">Búið að greiða</a>
+                        <a href="@routes.MakeDemand.markAsPaid(r.id.get, demand.id)" class="btn btn-warning btn-xs">Búið að greiða</a>
                     }else{
-                        <a href="@routes.MakeDemand.markAsUnPaid(r.id.get, demand.id.get)" class="btn btn-danger btn-xs">Ekki búið að greiða</a>
+                        <a href="@routes.MakeDemand.markAsUnPaid(r.id.get, demand.id)" class="btn btn-danger btn-xs">Ekki búið að greiða</a>
                     }
                 }
                 </td>
 
                 </tr>
             }
-            <tr class="active"><td>Samtals:</td><td>@Recipients.findByDemand(demand.id.get).foldLeft(0)((r,c) => r + c.amount) kr.</td><td></td><td></td></tr>
+            <tr class="active"><td>Samtals:</td><td>@Recipients.findByDemand(demand.id).foldLeft(0)((r,c) => r + c.amount) kr.</td><td></td><td></td></tr>
             <tr class="active"><td>Vegna: </td><td>@demand.description</td><td></td><td></td></tr>
             <tr class="active"><td>Stofnuð: </td><td>@demand.getDate</td><td></td><td></td></tr>
         </tbody>
     </table>
     @if(isOwner){
     @if(demand.status == Demands.freshDemand){
-        <a href="@routes.MakeDemand.cancel(demand.id.getOrElse(0))" class="btn btn-danger">Hætta við</a>
+        <a href="@routes.MakeDemand.cancel(demand.id)" class="btn btn-danger">Hætta við</a>
 
 
         @if(isAdmin){
-            <a href="@routes.MakeDemand.setStatusToSent(demand.id.getOrElse(0))" class="btn btn-warning">Merkja sem send</a>
+            <a href="@routes.MakeDemand.setStatusToSent(demand.id)" class="btn btn-warning">Merkja sem send</a>
         }
     }else{
         <h4>Krafa hefur verið send fyrir þessa rukkun.</h4>
@@ -44,7 +44,7 @@
 
         <br>
         <h3>Senda áminningu</h3>
-        @helper.form(action = routes.MakeDemand.sendReminder(demand.id.get)){
+        @helper.form(action = routes.MakeDemand.sendReminder(demand.id)){
             <div class="row">
                 <div class="form-group">
                     <label class="col-sm-2 control-label">Móttakandi</label>

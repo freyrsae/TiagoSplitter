@@ -53,13 +53,13 @@ object ContactControl extends Controller with Secured{
     )
   }
 
-  def editContact(id: Long) = IsOwner(id, Contacts.isOwner){ email => implicit request =>
+  def editContact(id: Long) = IsOwner(id.toString, Contacts.isOwner){ email => implicit request =>
     val contact = Contacts.findContactById(id)
     Ok(views.html.contacts.editContact(id, contactForm.fill(contact.kennitala, contact.name, contact.contactEmail)))
 
   }
 
-  def doEditContact(id: Long) = IsOwner(id, Contacts.isOwner){ email => implicit request =>
+  def doEditContact(id: Long) = IsOwner(id.toString, Contacts.isOwner){ email => implicit request =>
 
     try{
       val editContact = contactForm.bindFromRequest().get
@@ -77,7 +77,7 @@ object ContactControl extends Controller with Secured{
 
   }
 
-  def deleteContact(id: Long) = IsOwner(id, Contacts.isOwner){ email => implicit request =>
+  def deleteContact(id: Long) = IsOwner(id.toString, Contacts.isOwner){ email => implicit request =>
     try{
       Contacts.delete(id)
       Redirect(routes.ContactControl.createContact).flashing(
@@ -96,7 +96,7 @@ object ContactControl extends Controller with Secured{
     Ok(jsonArr.toString())
   }
 
-  def searchReminderContacts(demandId: Long, term: String) = IsAuthenticated{ email => implicit request =>
+  def searchReminderContacts(demandId: String, term: String) = IsAuthenticated{ email => implicit request =>
     val jsonArr = new JSONArray(Recipients.reminderSearch(demandId, term).map(_.name))
     Ok(jsonArr.toString())
   }

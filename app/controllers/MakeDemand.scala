@@ -53,13 +53,12 @@ object MakeDemand extends Controller with Secured{
     )
   }
 
-  //todo gera id fyrir demand að rugli
-  def show(demandId: Long) = Action{ implicit request =>
+  def show(demandId: String) = Action{ implicit request =>
     val demand = Demands.findDemandById(demandId)
     Ok(views.html.demand.showDemand(demand, isAdmin(request), Demands.isOwner(demandId, request.session.get("email").getOrElse(""))))
   }
 
-  def cancel(demandId: Long) = IsOwner(demandId, Demands.isOwner){email => implicit request =>
+  def cancel(demandId: String) = IsOwner(demandId, Demands.isOwner){email => implicit request =>
     try{
       Demands.delete(demandId)
       Redirect(routes.Application.index).flashing(
@@ -86,19 +85,19 @@ object MakeDemand extends Controller with Secured{
     Ok(views.html.demand.listDemands(list, true))
   }
 
-  def setStatusToSent(demandId: Long) = IsAdminAuthenticated{ email => implicit request =>
+  def setStatusToSent(demandId: String) = IsAdminAuthenticated{ email => implicit request =>
 
     Demands.setNewStatus(demandId)
     Redirect(routes.MakeDemand.show(demandId))
   }
 
-  def markAsPaid(recipientId: Long, demandId: Long) = IsOwner(demandId, Demands.isOwner){ email => implicit request =>
+  def markAsPaid(recipientId: Long, demandId: String) = IsOwner(demandId, Demands.isOwner){ email => implicit request =>
 
     Recipients.markAsPaid(recipientId)
     Redirect(routes.MakeDemand.show(demandId))
   }
 
-  def markAsUnPaid(recipientId: Long, demandId: Long) = IsOwner(demandId, Demands.isOwner){ email => implicit request =>
+  def markAsUnPaid(recipientId: Long, demandId: String) = IsOwner(demandId, Demands.isOwner){ email => implicit request =>
 
     Recipients.markAsPaid(recipientId, false)
     Redirect(routes.MakeDemand.show(demandId))
@@ -111,7 +110,7 @@ object MakeDemand extends Controller with Secured{
     )
   )
 
-  def sendReminder(demandId: Long) = IsOwner(demandId, Demands.isOwner){ email => implicit request =>
+  def sendReminder(demandId: String) = IsOwner(demandId, Demands.isOwner){ email => implicit request =>
 
     reminderForm.bindFromRequest.fold(
       formWithErrors => Redirect(routes.MakeDemand.show(demandId)).flashing(

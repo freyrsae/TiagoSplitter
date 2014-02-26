@@ -23,14 +23,14 @@
                     <td>@d.getDateNoTime</td>
                     <td>@d.amount kr.</td>
                     <td>@d.description</td>
-                    <td><ul class="list-unstyled">@Recipients.findByDemand(d.id.get).map{x =>
+                    <td><ul class="list-unstyled">@Recipients.findByDemand(d.id).map{x =>
                         <li class="@if(x.paid){text-success}else{text-danger}">
                         @{s"${x.justName}"}
                         </li>
                     }
                     </ul></td>
                     <td>@d.status</td>
-                    <td class="link"><a href="@routes.MakeDemand.show(d.id.getOrElse(0))">Skoða</a></td>
+                    <td class="link"><a href="@routes.MakeDemand.show(d.id)">Skoða</a></td>
                 </tr>
             }
         </tbody>

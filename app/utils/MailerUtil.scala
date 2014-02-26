@@ -14,7 +14,7 @@ import models.Demands
  */
 object MailerUtil {
 
-  def sendNotificationMail(email: String, id: Long, amount: Int, description: String, recipients: String, request: RequestHeader) = {
+  def sendNotificationMail(email: String, id: String, amount: Int, description: String, recipients: String, request: RequestHeader) = {
     val mail = use[MailerPlugin].email
     mail.setSubject("Ný krafa!")
     mail.setRecipient("memento@memento-ehf.is")
@@ -32,7 +32,7 @@ object MailerUtil {
     //mail.send( "text", "<html>html</html>")
   }
 
-  def sendReminderEmail(recipients: Seq[String], message: String, demandId: Long, request: RequestHeader) = {
+  def sendReminderEmail(recipients: Seq[String], message: String, demandId: String, request: RequestHeader) = {
     val mail = use[MailerPlugin].email
     mail.setSubject("Áminning frá Memento")
     mail.setRecipient(recipients.map(x => justEmail(x)):_*)

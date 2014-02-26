@@ -55,7 +55,7 @@ object Contacts extends Table[Contact]("contacts"){
     (for {c <- Contacts if (c.userEmail === email && (c.name like "%" + term + "%"))} yield c).list()
   }
 
-  def isOwner(id: Long, user: String): Boolean = DB.withSession{
-    !(for { c <- Contacts if (c.id === id && c.userEmail === user) } yield c).list().isEmpty
+  def isOwner(id: String, user: String): Boolean = DB.withSession{
+    !(for { c <- Contacts if (c.id === id.toLong && c.userEmail === user) } yield c).list().isEmpty
   }
 }

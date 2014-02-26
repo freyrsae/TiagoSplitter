@@ -13,9 +13,10 @@ import play.api.Play.current
 import Database.threadLocalSession
 import controllers.MakeDemand.DemandNoIds
 import java.sql.Timestamp
+import utils.Validation
 
 
-case class Demand(id: Option[Long] = None,
+case class Demand(id: String,
                   userEmail: String,
                   amount: Int,
                   description: String,
@@ -34,33 +35,37 @@ case class Demand(id: Option[Long] = None,
 }
 
 object Demands extends Table[Demand]("demands") {
-  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def id = column[String]("id")
   def userEmail = column[String]("user_email")
   def amount = column[Int]("amount")
   def description = column[String]("description")
   def status = column[String]("status")
   def timestamp = column[Timestamp]("timestamp")
-  def * = id.? ~ userEmail ~ amount ~ description ~  status ~ timestamp  <> (Demand.apply _, Demand.unapply _)
-  def autoInc = id.? ~ userEmail ~ amount ~ description ~ status ~ timestamp <> (Demand.apply _, Demand.unapply _) returning id
+  def * = id ~ userEmail ~ amount ~ description ~  status ~ timestamp  <> (Demand.apply _, Demand.unapply _)
   def client = foreignKey("user_demand_fk", userEmail, Users)(_.email)
 
   val recipientsSeperator = ";"
   val freshDemand = "Ný"
 
-  def findById(id: Long) = DB.withSession{
+  def findById(id: String) = DB.withSession{
     for { d <- Demands if d.id === id } yield d
   }
 
-  def findDemandById(id: Long): Demand = DB.withSession{
+  def findDemandById(id: String): Demand = DB.withSession{
     (for { d <- Demands if d.id === id } yield d).list().head
   }
 
-  def create(email: String, demand: DemandNoIds): Long = DB.withSession{
+  def create(email: String, demand: DemandNoIds): String = DB.withSession{
+    println("creating")
     val recsWithAmounts = recipientsWithAmountsList(demand)
-    val dbDemand = Demand(userEmail = email, amount = calculateAmount(demand.amount, isPerPerson(demand.perPerson), recsWithAmounts.length), description = demand.description, status = Demands.freshDemand)
-    val demandId = autoInc.insert(dbDemand)
+    val demandId = Validation.getRandomAlphaNumeric
+    val dbDemand = Demand(id = demandId ,userEmail = email, amount = calculateAmount(demand.amount, isPerPerson(demand.perPerson), recsWithAmounts.length), description = demand.description, status = Demands.freshDemand)
+    println("made dbDemand")
+    *.insert(dbDemand)
+    println("inserted")
     recsWithAmounts.map(x => Recipients.create(Recipient(demandId = demandId, name = x._1, amount = x._2, paid = false)))
     demandId
+
   }
 
   private def calculateAmount(inputAmount: Int, perPerson: Boolean, numberOfRecipients: Int): Int = {
@@ -87,7 +92,7 @@ object Demands extends Table[Demand]("demands") {
       Seq.tabulate(numberOfRecipients)(i => amount/numberOfRecipients + {if(i < amount%numberOfRecipients) 1 else 0})
   }
 
-  def delete(id: Long) = DB.withSession{
+  def delete(id: String) = DB.withSession{
     if(findDemandById(id).status == freshDemand){
       Recipients.deleteByDemand(id)
       findById(id).delete
@@ -100,7 +105,7 @@ object Demands extends Table[Demand]("demands") {
     (for { d <- Demands if d.userEmail === email } yield d).list()
   }
 
-  def findOwnerName(demandId: Long) = DB.withSession{
+  def findOwnerName(demandId: String) = DB.withSession{
     (for { d <- Demands if d.id === demandId
            u <- Users if u.email === d.userEmail} yield u).map(_.name).list().head
   }
@@ -109,7 +114,7 @@ object Demands extends Table[Demand]("demands") {
     (for { d <- Demands } yield d).list()
   }
 
-  def setNewStatus(id: Long) = DB.withSession{
+  def setNewStatus(id: String) = DB.withSession{
 
     def calculateStatus: String = {
       val paidRecipientsListSize = Recipients.numberOfPaidRecipients(id)
@@ -124,7 +129,7 @@ object Demands extends Table[Demand]("demands") {
       }.update(calculateStatus)
   }
 
-  def isOwner(id: Long, user: String): Boolean = DB.withSession{
+  def isOwner(id: String, user: String): Boolean = DB.withSession{
     !(for { d <- Demands if (d.id === id && d.userEmail === user) } yield d).list().isEmpty
   }
 }

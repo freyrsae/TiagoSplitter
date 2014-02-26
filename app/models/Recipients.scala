@@ -13,7 +13,7 @@ import play.api.db.slick.DB
 import play.api.Play.current
 import Database.threadLocalSession
 
-case class Recipient(id: Option[Long] = None, demandId: Long, name: String, amount: Int, paid: Boolean){
+case class Recipient(id: Option[Long] = None, demandId: String, name: String, amount: Int, paid: Boolean){
   def justName = {
     this.name.split(",")(0)
   }
@@ -22,7 +22,7 @@ case class Recipient(id: Option[Long] = None, demandId: Long, name: String, amou
 object Recipients extends Table[Recipient]("recipients"){
 
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-  def demandId = column[Long]("demandId")
+  def demandId = column[String]("demandId")
   def name = column[String]("name")
   def amount = column[Int]("amount")
   def paid = column[Boolean]("paid")
@@ -37,25 +37,25 @@ object Recipients extends Table[Recipient]("recipients"){
     *.insert(recipient)
   }
 
-  private def findBy(demandId: Long) = (for { r <- Recipients if r.demandId === demandId } yield r)
+  private def findBy(demandId: String) = (for { r <- Recipients if r.demandId === demandId } yield r)
 
-  def findByDemand(demandId: Long)= DB.withSession{
+  def findByDemand(demandId: String)= DB.withSession{
     findBy(demandId).list()
   }
 
-  def reminderSearch(demandId: Long, term: String) = DB.withSession{
+  def reminderSearch(demandId: String, term: String) = DB.withSession{
     findBy(demandId).filter(_.name like "%" + term + "%").list()
   }
 
-  def numberOfPaidRecipients(demandId: Long) = DB.withSession{
+  def numberOfPaidRecipients(demandId: String) = DB.withSession{
     Recipients.findBy(demandId).filter(_.paid === true).list().length
   }
 
-  def numberOfRecipients(demandId: Long) = DB.withSession{
+  def numberOfRecipients(demandId: String) = DB.withSession{
     Recipients.findBy(demandId).list().length
   }
 
-  def deleteByDemand(demandId: Long) = DB.withSession{
+  def deleteByDemand(demandId: String) = DB.withSession{
     findBy(demandId).delete
   }
 

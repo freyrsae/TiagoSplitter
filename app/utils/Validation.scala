@@ -1,6 +1,10 @@
 package utils
 
 import play.api.data.validation._
+import java.security.SecureRandom
+import java.math.BigInteger
+;
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +18,7 @@ object Validation {
   val allLetters = """[A-Za-z]*""".r
   val someNonKennitalaDigits = """\d{6}[ -]*\d{4}""".r
   val containsNoAt = """[^@]*""".r
+  final val randomGenerator = new SecureRandom()
 
   val passwordCheckConstraint: Constraint[String] = Constraint("constraints.passwordcheck")({
     plainText =>
@@ -54,5 +59,9 @@ object Validation {
         Invalid(errors)
       }
   })
+
+  val getRandomAlphaNumeric = {
+    new BigInteger(130, randomGenerator).toString(32)
+  }
 
 }

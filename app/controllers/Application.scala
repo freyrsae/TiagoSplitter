@@ -89,12 +89,13 @@ trait Secured {
     }
   }
 
-  def IsOwner(id: Long, isOwnerCheck: (Long, String) => Boolean, errorMessage: String = "Þú ert ekki réttur eigandi")(f: => String => Request[AnyContent] => Result) = IsAuthenticated { client => request =>
+  def IsOwner(id: String, isOwnerCheck: (String, String) => Boolean, errorMessage: String = "Þú ert ekki réttur eigandi")(f: => String => Request[AnyContent] => Result) = IsAuthenticated { client => request =>
     if(isOwnerCheck(id, client) || Users.isAdmin(client)) {
       f(client)(request)
     } else {
       Results.Forbidden(errorMessage)
     }
   }
+
 
 }
