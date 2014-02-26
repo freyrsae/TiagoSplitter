@@ -3,9 +3,12 @@ package controllers
 import play.api.mvc.Controller
 import play.api.data.Form
 import play.api.data.Forms._
-import models.{Contact, Contacts, Demand, Demands}
+import models._
 import scala.util.parsing.json.JSONArray
 import utils.Validation
+import scala.util.parsing.json.JSONArray
+import scala.Some
+import models.Contact
 
 
 /**
@@ -90,6 +93,11 @@ object ContactControl extends Controller with Secured{
 
   def searchContacts(term: String) = IsAuthenticated{ email => implicit request =>
     val jsonArr = new JSONArray(Contacts.searchInContacts(term, email).map(x => s"${x.name}, ${x.contactEmail}, ${x.kennitala}"))
+    Ok(jsonArr.toString())
+  }
+
+  def searchReminderContacts(demandId: Long, term: String) = IsAuthenticated{ email => implicit request =>
+    val jsonArr = new JSONArray(Recipients.reminderSearch(demandId, term).map(_.name))
     Ok(jsonArr.toString())
   }
 

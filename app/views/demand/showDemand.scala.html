@@ -103,8 +103,10 @@ $(document).ready(function(){
     });
 
     $(function() {
+        var pathArray = window.location.pathname.split( '/' );
+        var id = pathArray[2].replace('#','');
         $( "#tempRecipient" ).autocomplete({
-            source: "/tengilidir/leit",
+            source: "/tengilidir/aminning-leit/" + id,
             select: function(event, ui){
             var nameChosen = ui.item.value;
             $("#tempRecipient" ).val(nameChosen)

@@ -43,6 +43,10 @@ object Recipients extends Table[Recipient]("recipients"){
     findBy(demandId).list()
   }
 
+  def reminderSearch(demandId: Long, term: String) = DB.withSession{
+    findBy(demandId).filter(_.name like "%" + term + "%").list()
+  }
+
   def numberOfPaidRecipients(demandId: Long) = DB.withSession{
     Recipients.findBy(demandId).filter(_.paid === true).list().length
   }

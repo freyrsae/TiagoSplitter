@@ -32,6 +32,7 @@ GET         /tengilidir/breyta           controllers.ContactControl.editContact(
 POST        /tengilidir/breyta           controllers.ContactControl.doEditContact(id: Long ?= 0)
 GET         /tengilidir/eyda             controllers.ContactControl.deleteContact(id: Long ?= 0)
 GET         /tengilidir/leit             controllers.ContactControl.searchContacts(term: String ?= "")
+GET         /tengilidir/aminning-leit/:demandId    controllers.ContactControl.searchReminderContacts(demandId: Long, term: String ?= "")
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                controllers.Assets.at(path="/public", file)
