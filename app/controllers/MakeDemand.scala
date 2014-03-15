@@ -74,7 +74,7 @@ object MakeDemand extends Controller with Secured{
 
   def listofDemands = IsAuthenticated{ email => implicit request =>
 
-    val list = Demands.findByOwner(email).sortBy(x => x.id).reverse
+    val list = Demands.findByOwner(email).sortBy(x => x.timeStamp.getTime).reverse
 
     Ok(views.html.demand.listDemands(list))
   }
