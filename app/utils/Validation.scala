@@ -60,7 +60,7 @@ object Validation {
       }
   })
 
-  val getRandomAlphaNumeric = {
+  def getRandomAlphaNumeric = {
     new BigInteger(130, randomGenerator).toString(32)
   }
 
