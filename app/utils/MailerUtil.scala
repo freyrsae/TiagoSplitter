@@ -34,10 +34,10 @@ object MailerUtil {
 
   def sendReminderEmail(recipients: Seq[String], message: String, demandId: String, request: RequestHeader) = {
     val mail = use[MailerPlugin].email
-    mail.setSubject("Áminning frá Memento")
+    mail.setSubject("Áminning frá Mobi")
     mail.setRecipient(recipients.map(x => justEmail(x)):_*)
     mail.setFrom("memento mailer <no-reply@memento-ehf.is>")
-    mail.sendHtml( s"${Demands.findOwnerName(demandId)} hefur sent þér áminningu úr Memento kerfinu.<br> " +
+    mail.sendHtml( s"${Demands.findOwnerName(demandId)} hefur sent þér áminningu úr Mobi kerfinu.<br> " +
       s"Skilaboð: ${message} <br> " +
       s" <a href=http://${request.host}/skoda/${demandId}>Sjá nánar</a>" )
   }
