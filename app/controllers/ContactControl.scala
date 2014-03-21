@@ -24,7 +24,7 @@ object ContactControl extends Controller with Secured{
     tuple(
       "kennitala" -> text.verifying(Validation.kennitalaCheck),
       "name" -> text,
-      "email" -> text.verifying(Validation.emailCheck)
+      "phone" -> text.verifying(Validation.telCheck)
     )
   )
 
@@ -39,7 +39,7 @@ object ContactControl extends Controller with Secured{
     },
       contactData => {
         try{
-          Contacts.create(Contact(kennitala = contactData._1, name = contactData._2, contactEmail = contactData._3, userEmail = email))
+          Contacts.create(Contact(kennitala = contactData._1, name = contactData._2, phone = contactData._3, userEmail = email))
           Redirect(routes.ContactControl.createContact).flashing(
             "success" -> "Tengilið hefur verið bætt við"
           )
@@ -55,7 +55,7 @@ object ContactControl extends Controller with Secured{
 
   def editContact(id: Long) = IsOwner(id.toString, Contacts.isOwner){ email => implicit request =>
     val contact = Contacts.findContactById(id)
-    Ok(views.html.contacts.editContact(id, contactForm.fill(contact.kennitala, contact.name, contact.contactEmail)))
+    Ok(views.html.contacts.editContact(id, contactForm.fill(contact.kennitala, contact.name, contact.phone)))
 
   }
 
@@ -63,7 +63,7 @@ object ContactControl extends Controller with Secured{
 
     try{
       val editContact = contactForm.bindFromRequest().get
-      Contacts.edit(id, Contact(id = Some(id), kennitala = editContact._1, name = editContact._2, contactEmail = editContact._3, userEmail = email))
+      Contacts.edit(id, Contact(id = Some(id), kennitala = editContact._1, name = editContact._2, phone = editContact._3, userEmail = email))
       Redirect(routes.ContactControl.createContact).flashing(
         "success" -> "Tengilið hefur verið breytt"
       )
@@ -92,7 +92,7 @@ object ContactControl extends Controller with Secured{
   }
 
   def searchContacts(term: String) = IsAuthenticated{ email => implicit request =>
-    val jsonArr = new JSONArray(Contacts.searchInContacts(term, email).map(x => s"${x.name}, ${x.contactEmail}, ${x.kennitala}"))
+    val jsonArr = new JSONArray(Contacts.searchInContacts(term, email).map(x => s"${x.name}, ${x.phone}, ${x.kennitala}"))
     Ok(jsonArr.toString())
   }
 

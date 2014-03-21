@@ -18,6 +18,7 @@ object Validation {
   val allLetters = """[A-Za-z]*""".r
   val someNonKennitalaDigits = """\d{6}[ -]*\d{4}""".r
   val containsNoAt = """[^@]*""".r
+  val rightTelFormat = """\d{3}[ -]*\d{4}""".r
   final val randomGenerator = new SecureRandom()
 
   val passwordCheckConstraint: Constraint[String] = Constraint("constraints.passwordcheck")({
@@ -48,10 +49,24 @@ object Validation {
   })
 
   val emailCheck: Constraint[String] = Constraint("constraints.email")({
-    text =>
+    text =>{
       val errors = text match {
         case containsNoAt() => Seq(ValidationError("Netfang verður að innihalda @"))
         case _ => Nil
+      }
+      if(errors.isEmpty){
+        Valid
+      } else {
+        Invalid(errors)
+      }
+    }
+  })
+
+  val telCheck: Constraint[String] = Constraint("constraints.tel")({
+    text =>
+      val errors = text match {
+        case rightTelFormat()  => Nil
+        case _ => Seq(ValidationError("Óleyfilegt símanúmer"))
       }
       if(errors.isEmpty){
         Valid

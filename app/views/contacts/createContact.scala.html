@@ -6,7 +6,7 @@
     @flashMessages()
     @helper.form(action = routes.ContactControl.doCreateContact, 'novalidate -> "") {
         @text(theForm("name"), label = "Nafn")
-        @text(theForm("email"), label = "Netfang", inputType = "email")
+        @text(theForm("phone"), label = "Símanúmer", inputType = "tel")
         @text(theForm("kennitala"), label = "Kennitala", inputType = "tel")
 
         <div class="pull-right">
@@ -26,7 +26,7 @@
     <table class="table table-striped">
         <thead>
             <th>Nafn</th>
-            <th>Netfang</th>
+            <th>Símanúmer</th>
             <th>Kennitala</th>
             <th></th>
         </thead>
@@ -34,7 +34,7 @@
         @for(c <- listOfContacts){
             <tr>
                 <td>@c.name</td>
-                <td>@c.contactEmail</td>
+                <td>@c.phone</td>
                 <td>@c.kennitala</td>
                 <td><a href="@routes.ContactControl.editContact(c.id.get)">Breyta</a></td>
             </tr>
