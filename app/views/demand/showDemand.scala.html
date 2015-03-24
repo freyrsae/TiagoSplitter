@@ -29,7 +29,7 @@
     </table>
     @if(isOwner){
     @if(demand.status == Demands.freshDemand){
-        <a href="@routes.MakeDemand.cancel(demand.id)" class="btn btn-danger">Cancel</a>
+        <a href="@routes.MakeDemand.cancel(demand.id)" class="btn btn-danger">Delete</a>
 
 
         @if(isAdmin){
