@@ -2,15 +2,15 @@
 
 @import bootstrap3._
 
-@main("Búa til tengilið"){
+@main("Create contact"){
     @flashMessages()
     @helper.form(action = routes.ContactControl.doCreateContact, 'novalidate -> "") {
-        @text(theForm("name"), label = "Nafn")
-        @text(theForm("phone"), label = "Símanúmer", inputType = "tel")
-        @text(theForm("kennitala"), label = "Kennitala", inputType = "tel")
+        @text(theForm("name"), label = "Name")
+        @text(theForm("phone"), label = "Phone number", inputType = "tel")
+        @text(theForm("kennitala"), label = "ssn", inputType = "tel")
 
         <div class="pull-right">
-            <input class="btn btn-primary" type="submit" value="Bæta við">
+            <input class="btn btn-primary" type="submit" value="Add">
         </div>
     }
     <br>
@@ -22,12 +22,12 @@
     <br>
     <br>
     <br>
-    <h4>Tengiliðir</h4>
+    <h4>Contacts</h4>
     <table class="table table-striped">
         <thead>
-            <th>Nafn</th>
-            <th>Símanúmer</th>
-            <th>Kennitala</th>
+            <th>Name</th>
+            <th>Phonenumber</th>
+            <th>Ssn</th>
             <th></th>
         </thead>
         <tbody>
@@ -36,7 +36,7 @@
                 <td>@c.name</td>
                 <td>@c.phone</td>
                 <td>@c.kennitala</td>
-                <td><a href="@routes.ContactControl.editContact(c.id.get)">Breyta</a></td>
+                <td><a href="@routes.ContactControl.editContact(c.id.get)">Edit</a></td>
             </tr>
         }
         </tbody>

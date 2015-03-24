@@ -7,10 +7,10 @@
     <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
         @flashMessages()
         <div class="row">
-            <img src="@routes.Assets.at("images/mobi.png")" width="300" height="140" class="center-block" alt="Lógó">
+            <img src="@routes.Assets.at("images/tiago.png")" width="350" height="254" class="center-block" alt="Lógó">
         </div>
         <div class="row">
-            <p>Use a@@a.com for admin, b@@b.com regular user. Password: "secret".</p>
+            <p>Tiago Splitter says: Use a@@a.com for admin, b@@b.com regular user. Password: "secret".</p>
         </div>
 
     @helper.form(action = routes.Application.authenticate) {
@@ -19,11 +19,11 @@
                 @error.message
             </div>
         }
-        @text(theForm("email"), label = "Netfang", inputType = "email")
-        @password(theForm("password"), label = "Lykilorð")
+        @text(theForm("email"), label = "E-mail", inputType = "email")
+        @password(theForm("password"), label = "Password")
 
         <div class="pull-right">
-            <input class="btn btn-primary" type="submit" value="Skrá inn">
+            <input class="btn btn-primary" type="submit" value="Log in">
         </div>
 
     }

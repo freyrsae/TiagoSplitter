@@ -7,13 +7,13 @@
     @helper.form(action = routes.MakeDemand.doMakeDemand, 'id -> "demandForm") {
         <div class="row" xmlns="http://www.w3.org/1999/html">
             <div class="form-group">
-                <label class="col-sm-2 control-label">Upphæð</label>
+                <label class="col-sm-2 control-label">Amount</label>
                 <div class="col-sm-8">
                     <input type="tel"
                     class="form-control"
                     id="amount"
                     name="amount"
-                    placeholder="0 kr."
+                    placeholder="0 $"
                     onkeyup="this.value=this.value.replace(/[^\d]/,'')"
                     />
                     <span class="help-block"></span>
@@ -23,25 +23,25 @@
 
                 <div class="col-sm-2 checkbox-inline checkbox col-xs-10 col-xs-offset-5 col-sm-offset-0">
                     <label class="control-label">
-                    <input type="checkbox" id="perPerson" name="perPerson"> Á mann
+                    <input type="checkbox" id="perPerson" name="perPerson"> Per person
                     </label>
 
                 </div>
             </div>
         </div>
         <div class="row">
-        @text(theForm("description"), label = "Vegna", maxlength = 150, placeholder = "Lýsing")
+        @text(theForm("description"), label = "For", maxlength = 150, placeholder = "Description")
         </div>
         <div class="row">
         <div class="form-group">
-            <label class="col-sm-2 control-label">Móttakandi</label>
+            <label class="col-sm-2 control-label">Receiver</label>
             <div class="col-sm-10">
                 <div class="input-group">
                 <input type="text"
                 class="form-control"
                 id="tempRecipient"
                 name="tempRecipient"
-                placeholder="Nafn, netfang og kennitala"/>
+                placeholder="Name, e-mail and ssn"/>
                 <div class="input-group-btn">
                     <a href="#" id="addRecButton" class="btn btn-info" role="button">
                         <span class="glyphicon glyphicon-plus"></span>
@@ -58,7 +58,7 @@
         </div>
 
     <div class="pull-right">
-        <input class="btn btn-primary" type="submit" value="Búa til">
+        <input class="btn btn-primary" type="submit" value="Create">
     </div>
     }
 }
@@ -74,7 +74,7 @@
         $("#message" ).html('' +
 
         '<div class="col-sm-offset-2 col-sm-10"><div class="alert alert-danger"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>' +
-        'Krafa verður að hafa upphæð og a.m.k. einn móttakanda.' +
+        'A split must have at least one recipient.' +
         '</div></div>')
             event.preventDefault();
         }
@@ -129,9 +129,9 @@
             $('div#recs' ).children( ).children("div" ).each(function(index,val) {
                 var addOne = 0;
                 if(index < remainder){addOne = 1};
-                $(this ).find("span.recAmount").html((Math.floor(recAmount) + addOne) + " kr. &nbsp;");
+                $(this ).find("span.recAmount").html((Math.floor(recAmount) + addOne) + " $ &nbsp;");
             });
-            //$("span.recAmount" ).html(Math.round(recAmount) + " kr. &nbsp;");
+            //$("span.recAmount" ).html(Math.round(recAmount) + " $ &nbsp;");
         }
 
         function isTotal(){

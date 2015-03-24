@@ -2,16 +2,16 @@
 
 @import bootstrap3._
 
-@main("Breyta tengilið"){
+@main("Change contact"){
     @flashMessages()
     @helper.form(action = routes.ContactControl.doEditContact(id)) {
-        @text(theForm("name"), label = "Nafn")
-        @text(theForm("email"), label = "Netfang", inputType = "email")
-        @text(theForm("kennitala"), label = "Kennitala", inputType = "tel", pattern = ".{10,10}")
+        @text(theForm("name"), label = "Name")
+        @text(theForm("email"), label = "e-mail", inputType = "email")
+        @text(theForm("kennitala"), label = "ssn", inputType = "tel", pattern = ".{10,10}")
 
         <div class="pull-right">
-            <input class="btn btn-primary" type="submit" value="Breyta">
-            <a class="btn btn-danger" href="@routes.ContactControl.deleteContact(id)">Eyða</a>
+            <input class="btn btn-primary" type="submit" value="Edit">
+            <a class="btn btn-danger" href="@routes.ContactControl.deleteContact(id)">Delete</a>
         </div>
     }
 }

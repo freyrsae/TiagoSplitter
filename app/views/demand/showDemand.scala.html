@@ -2,59 +2,59 @@
 
 @import bootstrap3._
 
-@main("Rukkun", isOwner){
+@main("Split", isOwner){
     @flashMessages()
     <table class="table">
         <tbody>
             @for(r <- Recipients.findByDemand(demand.id)){
                 <tr @if(demand.status != Demands.freshDemand){class="@if(r.paid){success}else{danger}"}>
-                    <td>@r.name</td><td>@r.amount kr.</td>
-                    <td>@if(r.paid){Greitt}else{Ógreitt}</td>
+                    <td>@r.name</td><td>@r.amount $.</td>
+                    <td>@if(r.paid){Paid}else{Unpaid}</td>
                 <td>
                 @if(isOwner){
                     @if(!r.paid){
-                        <a href="@routes.MakeDemand.markAsPaid(r.id.get, demand.id)" class="btn btn-warning btn-xs">Búið að greiða</a>
+                        <a href="@routes.MakeDemand.markAsPaid(r.id.get, demand.id)" class="btn btn-warning btn-xs">Paid</a>
                     }else{
-                        <a href="@routes.MakeDemand.markAsUnPaid(r.id.get, demand.id)" class="btn btn-danger btn-xs">Ekki búið að greiða</a>
+                        <a href="@routes.MakeDemand.markAsUnPaid(r.id.get, demand.id)" class="btn btn-danger btn-xs">Unpaid</a>
                     }
                 }
                 </td>
 
                 </tr>
             }
-            <tr class="active"><td>Samtals:</td><td>@Recipients.findByDemand(demand.id).foldLeft(0)((r,c) => r + c.amount) kr.</td><td></td><td></td></tr>
-            <tr class="active"><td>Vegna: </td><td>@demand.description</td><td></td><td></td></tr>
-            <tr class="active"><td>Stofnuð: </td><td>@demand.getDate</td><td></td><td></td></tr>
+            <tr class="active"><td>Total:</td><td>@Recipients.findByDemand(demand.id).foldLeft(0)((r,c) => r + c.amount) $.</td><td></td><td></td></tr>
+            <tr class="active"><td>For: </td><td>@demand.description</td><td></td><td></td></tr>
+            <tr class="active"><td>Created: </td><td>@demand.getDate</td><td></td><td></td></tr>
         </tbody>
     </table>
     @if(isOwner){
     @if(demand.status == Demands.freshDemand){
-        <a href="@routes.MakeDemand.cancel(demand.id)" class="btn btn-danger">Hætta við</a>
+        <a href="@routes.MakeDemand.cancel(demand.id)" class="btn btn-danger">Cancel</a>
 
 
         @if(isAdmin){
-            <a href="@routes.MakeDemand.setStatusToSent(demand.id)" class="btn btn-warning">Merkja sem send</a>
+            <a href="@routes.MakeDemand.setStatusToSent(demand.id)" class="btn btn-warning">Mark as sent</a>
         }
     }else{
-        <h4>Krafa hefur verið send fyrir þessa rukkun.</h4>
+        <h4>This split has been processed.</h4>
     }
-    <a id="reminderButton" class="btn btn-primary" href="#">Senda áminningu í tölvupósti</a>
+    <a id="reminderButton" class="btn btn-primary disabled" href="#">Send an e-mail reminder</a>
 
     <div id="reminderForm" class="hidden">
 
         <br>
-        <h3>Senda áminningu</h3>
+        <h3>Send reminder</h3>
         @helper.form(action = routes.MakeDemand.sendReminder(demand.id)){
             <div class="row">
                 <div class="form-group">
-                    <label class="col-sm-2 control-label">Móttakandi</label>
+                    <label class="col-sm-2 control-label">Receiver</label>
                     <div class="col-sm-10">
                         <div class="input-group">
                             <input type="text"
                             class="form-control"
                             id="tempRecipient"
                             name="tempRecipient"
-                            placeholder="Nafn, netfang og kennitala"/>
+                            placeholder="Name, e-mail and ssn"/>
                             <div class="input-group-btn">
                                 <a href="#" id="addRecButton" class="btn btn-info" role="button">
                                     <span class="glyphicon glyphicon-plus"></span>
@@ -72,7 +72,7 @@
 
             <div class="row">
             <div class="form-group">
-                <label class="col-sm-2 control-label">Skilaboð</label>
+                <label class="col-sm-2 control-label">Message</label>
                 <div class="col-sm-10">
                     <textarea class="form-control"
                     rows="3"
@@ -86,7 +86,7 @@
             </div>
 
             <div class="pull-right">
-                <input class="btn btn-primary" type="submit" value="Senda">
+                <input class="btn btn-primary" type="submit" value="Send">
             </div>
         }
     </div>

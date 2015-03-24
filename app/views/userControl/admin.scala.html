@@ -4,17 +4,17 @@
 
 @main("Admin"){
 @flashMessages()
-<a href="@routes.MakeDemand.listOfDemandsAdmin" class="btn btn-default">Listi yfir rukkanir</a>
+<a href="@routes.MakeDemand.listOfDemandsAdmin" class="btn btn-default">List of splits</a>
 <div>
 @helper.form(action = routes.UserControl.createUser) {
-    @text(theForm("name"), label = "Nafn")
-    @text(theForm("kennitala"), label = "Kennitala")
-    @text(theForm("accountNo"), label = "Reikningsnúmer")
-    @text(theForm("email"), label = "Netfang")
-    @password(theForm("password"), label = "Lykilorð")
+    @text(theForm("name"), label = "Name")
+    @text(theForm("kennitala"), label = "Social security number")
+    @text(theForm("accountNo"), label = "Account number")
+    @text(theForm("email"), label = "e-mail")
+    @password(theForm("password"), label = "password")
 
     <div class="pull-right">
-        <input class="btn btn-primary" type="submit" value="Búa til">
+        <input class="btn btn-primary" type="submit" value="Create">
     </div>
 }
 </div>

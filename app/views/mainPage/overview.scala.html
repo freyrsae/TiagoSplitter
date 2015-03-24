@@ -1,14 +1,14 @@
 @(isAdmin: Boolean = false)(implicit flash: Flash)
 
-@main("Mobi"){
+@main("Splitter"){
     @flashMessages()
 
     <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-        <a class="btn btn-default btn-lg btn-block" href="@routes.MakeDemand.makeDemand"><span class="pull-left">&nbsp;&nbsp;</span><span class="glyphicon glyphicon-send pull-left"></span>Rukka</a>
-        <a class="btn btn-default btn-lg btn-block" href="@routes.MakeDemand.listofDemands"><span class="pull-left">&nbsp;&nbsp;</span><span class="glyphicon glyphicon-list-alt pull-left"></span> Yfirlit</a>
-        <a class="btn btn-default btn-lg btn-block" href="@routes.ContactControl.createContact"><span class="pull-left">&nbsp;&nbsp;</span><span class="glyphicon glyphicon-user pull-left"></span> Tengiliðir</a>
+        <a class="btn btn-default btn-lg btn-block" href="@routes.MakeDemand.makeDemand"><span class="pull-left">&nbsp;&nbsp;</span><span class="glyphicon glyphicon-send pull-left"></span>Split</a>
+        <a class="btn btn-default btn-lg btn-block" href="@routes.MakeDemand.listofDemands"><span class="pull-left">&nbsp;&nbsp;</span><span class="glyphicon glyphicon-list-alt pull-left"></span> Overview</a>
+        <a class="btn btn-default btn-lg btn-block" href="@routes.ContactControl.createContact"><span class="pull-left">&nbsp;&nbsp;</span><span class="glyphicon glyphicon-user pull-left"></span> Contacts</a>
         @if(isAdmin){
-            <a class="btn btn-default btn-lg btn-block" href="@routes.UserControl.admin"><span class="pull-left">&nbsp;&nbsp;</span><span class="glyphicon glyphicon-glass pull-left"></span>Stjórnkerfi</a>
+            <a class="btn btn-default btn-lg btn-block" href="@routes.UserControl.admin"><span class="pull-left">&nbsp;&nbsp;</span><span class="glyphicon glyphicon-glass pull-left"></span>Admin</a>
         }
     </div>
 }
