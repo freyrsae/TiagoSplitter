@@ -5,4 +5,4 @@ A simple application for splitting up check amongst friends. This was built as a
 
 The project is done in the Play Framework with scala and was the first one I made with that combo besides trivial ones. It is connected to a MySQL database using slick.
 
-The app is up and running on [link](https://memento-split.herokuapp.com/).
+The app is up and running [here](https://memento-split.herokuapp.com/).
