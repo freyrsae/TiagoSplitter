@@ -41,12 +41,12 @@ object MakeDemand extends Controller with Secured{
           val demandId = Demands.create(email, demand)
           //MailerUtil.sendNotificationMail(email, demandId, demand.amount, demand.description, demand.recipients.mkString(", "), request)
           Redirect(routes.MakeDemand.show(demandId)).flashing(
-            "success" -> "Stofnuð hefur verið rukkun með eftirfarandi upplýsingum"
+            "success" -> "Split created with following details"
           )
         }
         catch {
           case e: Exception => Redirect(routes.MakeDemand.makeDemand).flashing(
-            "danger" -> "Mistókst að stofna rukkun"
+            "danger" -> "Failed to create a split"
           )
         }
       }
@@ -62,12 +62,12 @@ object MakeDemand extends Controller with Secured{
     try{
       Demands.delete(demandId)
       Redirect(routes.Application.index).flashing(
-        "success" -> "Rukkun hefur verið eytt"
+        "success" -> "Split deleted"
       )
     }
     catch {
       case e: Exception => Redirect(routes.Application.index).flashing(
-        "danger" -> "Mistókst að hætta við rukkun"
+        "danger" -> "Failed to delete split"
       )
     }
   }
@@ -114,13 +114,13 @@ object MakeDemand extends Controller with Secured{
 
     reminderForm.bindFromRequest.fold(
       formWithErrors => Redirect(routes.MakeDemand.show(demandId)).flashing(
-        "danger" -> "Ekki tókst að senda áminningu"
+        "danger" -> "Failed to send reminder"
       ),
       reminder => try{
         //MailerUtil.sendReminderEmail(reminder._1, reminder._2, demandId, request)
-        Redirect(routes.MakeDemand.show(demandId)).flashing("success" -> "Áminning hefur verið send")
+        Redirect(routes.MakeDemand.show(demandId)).flashing("success" -> "Reminder sent")
       } catch {
-        case e: Exception => Redirect(routes.MakeDemand.show(demandId)).flashing("danger" -> "Ekki tókst að senda áminningu")
+        case e: Exception => Redirect(routes.MakeDemand.show(demandId)).flashing("danger" -> "Failed to send reminder")
       }
 
     )
