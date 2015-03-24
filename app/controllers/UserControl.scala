@@ -39,12 +39,12 @@ object UserControl extends Controller with Secured {
       try{
         Users.create(User(email = userData._1, name = userData._2, pass = userData._3, kennitala = userData._4, accountNo = userData._5))
         Redirect(routes.UserControl.admin).flashing(
-          "success" -> "Nýr notandi hefur verið gerður"
+          "success" -> "New user created"
         )
       }
       catch {
         case e: Exception => Redirect(routes.UserControl.admin).flashing(
-          "danger" -> "Mistókst að gera nýjan notanda"
+          "danger" -> "Failed to create user"
         )
       }
     }
@@ -75,12 +75,12 @@ object UserControl extends Controller with Secured {
       try{
         Users.edit(email, userData._1, userData._2, userData._3, userData._4)
         Redirect(routes.UserControl.editUser).flashing(
-          "success" -> "Notendaupplýsingum hefur verið breytt"
+          "success" -> "User info edited"
         )
       }
       catch {
         case e: Exception => Redirect(routes.UserControl.editUser).flashing(
-          "danger" -> "Mistókst að breyta notendaupplýsingum"
+          "danger" -> "Failed to edit user info"
         )
       }
     }

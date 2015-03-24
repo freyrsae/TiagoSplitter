@@ -44,7 +44,7 @@ object Application extends Controller with Secured {
 
   def logout = Action{
     Redirect(routes.Application.login).withNewSession.flashing(
-      "success" -> "Notandi hefur verið skráður út"
+      "success" -> "User logged out"
     )
   }
 
@@ -85,11 +85,11 @@ trait Secured {
     if(Users.isAdmin(client)) {
       f(client)(request)
     } else {
-      Results.Forbidden("Þú hefur ekki réttindi til að gera þetta")
+      Results.Forbidden("You do not have permission to do this")
     }
   }
 
-  def IsOwner(id: String, isOwnerCheck: (String, String) => Boolean, errorMessage: String = "Þú ert ekki réttur eigandi")(f: => String => Request[AnyContent] => Result) = IsAuthenticated { client => request =>
+  def IsOwner(id: String, isOwnerCheck: (String, String) => Boolean, errorMessage: String = "You are not the owner")(f: => String => Request[AnyContent] => Result) = IsAuthenticated { client => request =>
     if(isOwnerCheck(id, client) || Users.isAdmin(client)) {
       f(client)(request)
     } else {
