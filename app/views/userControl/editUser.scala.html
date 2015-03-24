@@ -6,10 +6,10 @@
 @main("Splitter"){
     @flashMessages()
     @helper.form(action = routes.UserControl.doEditUser) {
-        @text(theForm("name"), label = "Nafn")
-        @text(theForm("kennitala"), label = "Kennitala", inputType = "tel")
-        @text(theForm("accountNo"), label = "Reikningsnúmer", inputType = "tel")
-        @password(theForm("password"), label = "Lykilorð", help="Skildu eftir autt ef þú vilt halda lykilorði óbreyttu")
+        @text(theForm("name"), label = "Name")
+        @text(theForm("kennitala"), label = "Ssn", inputType = "tel")
+        @text(theForm("accountNo"), label = "Account number", inputType = "tel")
+        @password(theForm("password"), label = "Password", help="Leave empty if you do not wish to change it.")
 
         <div class="pull-right">
             <input class="btn btn-primary" type="submit" value="Edit">
