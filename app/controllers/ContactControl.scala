@@ -24,7 +24,7 @@ object ContactControl extends Controller with Secured{
     tuple(
       "kennitala" -> text.verifying(Validation.kennitalaCheck),
       "name" -> text,
-      "phone" -> text.verifying(Validation.telCheck)
+      "phone" -> text.verifying(Validation.emailCheck)
     )
   )
 
@@ -65,12 +65,12 @@ object ContactControl extends Controller with Secured{
       val editContact = contactForm.bindFromRequest().get
       Contacts.edit(id, Contact(id = Some(id), kennitala = editContact._1, name = editContact._2, phone = editContact._3, userEmail = email))
       Redirect(routes.ContactControl.createContact).flashing(
-        "success" -> "Tengilið hefur verið breytt"
+        "success" -> "Contact info edited"
       )
     }
     catch {
       case e: Exception => Redirect(routes.ContactControl.createContact).flashing(
-        "danger" -> "Mistókst að breyta tengilið"
+        "danger" -> "Failed to edit contact info"
       )
     }
 

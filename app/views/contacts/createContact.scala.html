@@ -6,7 +6,7 @@
     @flashMessages()
     @helper.form(action = routes.ContactControl.doCreateContact, 'novalidate -> "") {
         @text(theForm("name"), label = "Name")
-        @text(theForm("phone"), label = "Phone number", inputType = "tel")
+        @text(theForm("phone"), label = "email", inputType = "email")
         @text(theForm("kennitala"), label = "ssn", inputType = "tel")
 
         <div class="pull-right">
@@ -26,7 +26,7 @@
     <table class="table table-striped">
         <thead>
             <th>Name</th>
-            <th>Phonenumber</th>
+            <th>email</th>
             <th>Ssn</th>
             <th></th>
         </thead>

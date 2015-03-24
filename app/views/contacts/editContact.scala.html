@@ -6,7 +6,7 @@
     @flashMessages()
     @helper.form(action = routes.ContactControl.doEditContact(id)) {
         @text(theForm("name"), label = "Name")
-        @text(theForm("email"), label = "e-mail", inputType = "email")
+        @text(theForm("phone"), label = "e-mail", inputType = "email")
         @text(theForm("kennitala"), label = "ssn", inputType = "tel", pattern = ".{10,10}")
 
         <div class="pull-right">
