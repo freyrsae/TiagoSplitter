@@ -9,7 +9,9 @@
         <div class="row">
             <img src="@routes.Assets.at("images/mobi.png")" width="300" height="140" class="center-block" alt="Lógó">
         </div>
-
+        <div class="row">
+            <p>Use a@@a.com for admin, b@@b.com regular user. Password: "secret".</p>
+        </div>
 
     @helper.form(action = routes.Application.authenticate) {
         @theForm.globalError.map { error =>
