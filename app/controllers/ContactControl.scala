@@ -41,12 +41,12 @@ object ContactControl extends Controller with Secured{
         try{
           Contacts.create(Contact(kennitala = contactData._1, name = contactData._2, phone = contactData._3, userEmail = email))
           Redirect(routes.ContactControl.createContact).flashing(
-            "success" -> "Tengilið hefur verið bætt við"
+            "success" -> "Contact added"
           )
         }
         catch {
           case e: Exception => Redirect(routes.ContactControl.createContact).flashing(
-            "danger" -> "Mistókst að bæta við tengilið"
+            "danger" -> "Failed to add contact"
           )
         }
     }
@@ -81,12 +81,12 @@ object ContactControl extends Controller with Secured{
     try{
       Contacts.delete(id)
       Redirect(routes.ContactControl.createContact).flashing(
-      "success" -> "Tengilið hefur verið eytt"
+      "success" -> "Contact deleted"
       )
     }
     catch {
       case e: Exception => Redirect(routes.ContactControl.createContact).flashing(
-        "danger" -> "Ekki tókst að eyða tengilið"
+        "danger" -> "Failed to delete contact"
       )
     }
   }
