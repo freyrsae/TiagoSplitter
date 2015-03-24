@@ -17,9 +17,9 @@ object MailerUtil {
   def sendNotificationMail(email: String, id: String, amount: Int, description: String, recipients: String, request: RequestHeader) = {
     val mail = use[MailerPlugin].email
     mail.setSubject("Ný krafa!")
-    mail.setRecipient("no-reply@memento-ehf.is")
+    mail.setRecipient("Tiago Splitter")
     //or use a list
-    mail.setFrom("memento mailer <no-reply@memento-ehf.is>")
+    mail.setFrom("Splitter mailer")
     //sends html
     //mail.sendHtml("<html>html</html>" )
     //sends text/text
@@ -34,10 +34,10 @@ object MailerUtil {
 
   def sendReminderEmail(recipients: Seq[String], message: String, demandId: String, request: RequestHeader) = {
     val mail = use[MailerPlugin].email
-    mail.setSubject("Áminning frá Mobi")
+    mail.setSubject("Áminning frá Splitter")
     mail.setRecipient(recipients.map(x => justEmail(x)):_*)
-    mail.setFrom("memento mailer <no-reply@memento-ehf.is>")
-    mail.sendHtml( s"${Demands.findOwnerName(demandId)} hefur sent þér áminningu úr Mobi kerfinu.<br> " +
+    mail.setFrom("Splitter")
+    mail.sendHtml( s"${Demands.findOwnerName(demandId)} hefur sent þér áminningu úr Splitter kerfinu.<br> " +
       s"Skilaboð: ${message} <br> " +
       s" <a href=http://${request.host}/skoda/${demandId}>Sjá nánar</a>" )
   }

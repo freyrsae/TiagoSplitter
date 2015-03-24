@@ -39,7 +39,7 @@ object MakeDemand extends Controller with Secured{
     demand => {
         try{
           val demandId = Demands.create(email, demand)
-          MailerUtil.sendNotificationMail(email, demandId, demand.amount, demand.description, demand.recipients.mkString(", "), request)
+          //MailerUtil.sendNotificationMail(email, demandId, demand.amount, demand.description, demand.recipients.mkString(", "), request)
           Redirect(routes.MakeDemand.show(demandId)).flashing(
             "success" -> "Stofnuð hefur verið rukkun með eftirfarandi upplýsingum"
           )
@@ -117,7 +117,7 @@ object MakeDemand extends Controller with Secured{
         "danger" -> "Ekki tókst að senda áminningu"
       ),
       reminder => try{
-        MailerUtil.sendReminderEmail(reminder._1, reminder._2, demandId, request)
+        //MailerUtil.sendReminderEmail(reminder._1, reminder._2, demandId, request)
         Redirect(routes.MakeDemand.show(demandId)).flashing("success" -> "Áminning hefur verið send")
       } catch {
         case e: Exception => Redirect(routes.MakeDemand.show(demandId)).flashing("danger" -> "Ekki tókst að senda áminningu")
