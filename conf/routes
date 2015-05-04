@@ -15,24 +15,24 @@ GET         /edit                        controllers.UserControl.editUser
 POST        /edit                        controllers.UserControl.doEditUser
 
 GET         /                            controllers.Application.index
-GET         /um-okkur                    controllers.Application.aboutUs
+GET         /about-us                    controllers.Application.aboutUs
 
-GET         /stofna                      controllers.MakeDemand.makeDemand
-POST        /stofna                      controllers.MakeDemand.doMakeDemand
-GET         /listi                       controllers.MakeDemand.listofDemands
-GET         /haetta-vid/:demandId        controllers.MakeDemand.cancel(demandId: String)
-GET         /skoda/:demandId             controllers.MakeDemand.show(demandId: String)
+GET         /create                      controllers.MakeDemand.makeDemand
+POST        /create                      controllers.MakeDemand.doMakeDemand
+GET         /list                        controllers.MakeDemand.listofDemands
+GET         /cancel/:demandId            controllers.MakeDemand.cancel(demandId: String)
+GET         /show/:demandId              controllers.MakeDemand.show(demandId: String)
 GET         /markAsPaid                  controllers.MakeDemand.markAsPaid(recipientId: Long ?= 0, demandId: String ?= "")
 GET         /markAsUnPaid                controllers.MakeDemand.markAsUnPaid(recipientId: Long ?= 0, demandId: String ?= "")
 POST        /sendReminder                controllers.MakeDemand.sendReminder(demandId: String ?= "")
 
-GET         /tengilidir/bua-til          controllers.ContactControl.createContact
-POST        /tengilidir/bua-til          controllers.ContactControl.doCreateContact
-GET         /tengilidir/breyta           controllers.ContactControl.editContact(id: Long ?= 0)
-POST        /tengilidir/breyta           controllers.ContactControl.doEditContact(id: Long ?= 0)
-GET         /tengilidir/eyda             controllers.ContactControl.deleteContact(id: Long ?= 0)
-GET         /tengilidir/leit             controllers.ContactControl.searchContacts(term: String ?= "")
-GET         /tengilidir/aminning-leit/:demandId    controllers.ContactControl.searchReminderContacts(demandId: String, term: String ?= "")
+GET         /contacts/create             controllers.ContactControl.createContact
+POST        /contacts/create             controllers.ContactControl.doCreateContact
+GET         /contacts/edit               controllers.ContactControl.editContact(id: Long ?= 0)
+POST        /contacts/edit               controllers.ContactControl.doEditContact(id: Long ?= 0)
+GET         /contacts/delete             controllers.ContactControl.deleteContact(id: Long ?= 0)
+GET         /contacts/search             controllers.ContactControl.searchContacts(term: String ?= "")
+GET         /contacts/reminder-search/:demandId    controllers.ContactControl.searchReminderContacts(demandId: String, term: String ?= "")
 
 # Map static resources from the /public folder to the /assets URL path
 GET         /assets/*file                controllers.Assets.at(path="/public", file)

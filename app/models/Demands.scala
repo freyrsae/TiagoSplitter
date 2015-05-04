@@ -45,7 +45,7 @@ object Demands extends Table[Demand]("demands") {
   def client = foreignKey("user_demand_fk", userEmail, Users)(_.email)
 
   val recipientsSeperator = ";"
-  val freshDemand = "Ný"
+  val freshDemand = "New"
 
   def findById(id: String) = DB.withSession{
     for { d <- Demands if d.id === id } yield d
