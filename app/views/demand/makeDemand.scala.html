@@ -146,7 +146,7 @@
 
         $(function() {
             $( "#tempRecipient" ).autocomplete({
-                source: "/tengilidir/leit",
+                source: "/contacts/search",
                 select: function(event, ui){
                     var nameChosen = ui.item.value;
                     $("#tempRecipient" ).val(nameChosen)
